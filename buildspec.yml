@@ -12,7 +12,7 @@ phases:
 
 artifacts:
   files:
-    - service/target/*.jar
+    - target/*.jar
   discard-paths: yes
 
 cache:
