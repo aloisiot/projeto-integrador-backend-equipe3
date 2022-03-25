@@ -1,0 +1,34 @@
+package dh.projetointegradorctd.backend.controller;
+
+import dh.projetointegradorctd.backend.model.dataStorage.Product;
+import dh.projetointegradorctd.backend.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/products", produces = "application/json;charset=UTF-8")
+public class ProductController extends TemplateCrudController<Product> {
+
+    @Autowired
+    public ProductController(ProductService service) {
+        super(service);
+    }
+
+    @GetMapping("/by-category/{categoryId}")
+    public ResponseEntity<List<Product>> findAllByCategory(@PathVariable Long categoryId) {
+        ProductService service = (ProductService) super.service;
+        return ResponseEntity.ok(service.findAllByCategoryId(categoryId));
+    }
+
+    @GetMapping("/by-city/{cityId}")
+    public ResponseEntity<List<Product>> findAllByCity(@PathVariable Long cityId) {
+        ProductService service = (ProductService) super.service;
+        return ResponseEntity.ok(service.findAllByCityId(cityId));
+    }
+}
