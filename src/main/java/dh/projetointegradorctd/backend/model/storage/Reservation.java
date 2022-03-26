@@ -1,6 +1,7 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
-import dh.projetointegradorctd.backend.model.auth.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import dh.projetointegradorctd.backend.model.actor.Client;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "tb_reservations")
 public class Reservation extends DataBaseEntity {
 
     @Id
@@ -28,8 +30,9 @@ public class Reservation extends DataBaseEntity {
     private LocalDate endDate;
 
     @ManyToOne
-    @NotNull(message = "A reserva deve conter um usuário associado")
-    private User user;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull(message = "A reserva deve conter um cliente associado")
+    private Client client;
 
     @ManyToOne
     @NotNull(message = "A reserva deve conter um produto associado")
