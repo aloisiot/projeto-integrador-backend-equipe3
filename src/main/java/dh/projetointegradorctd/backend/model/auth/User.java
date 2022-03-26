@@ -1,7 +1,7 @@
 package dh.projetointegradorctd.backend.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dh.projetointegradorctd.backend.model.dataStorage.DataBaseEntity;
+import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +36,7 @@ public class User extends DataBaseEntity implements UserDetails {
     private String email;
 
     @NotBlank
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Size(min = 8, max = 255, message = "a senha deve conter entre 8 e 255 caracters")
     private String password;
 
@@ -79,5 +79,4 @@ public class User extends DataBaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

@@ -1,7 +1,7 @@
 package dh.projetointegradorctd.backend.model;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Category;
-import dh.projetointegradorctd.backend.model.dataStorage.Product;
+import dh.projetointegradorctd.backend.model.storage.Category;
+import dh.projetointegradorctd.backend.model.storage.Product;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

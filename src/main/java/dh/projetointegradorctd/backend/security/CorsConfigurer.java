@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.config;
+package dh.projetointegradorctd.backend.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

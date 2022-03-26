@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.service;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Image;
+import dh.projetointegradorctd.backend.model.storage.Image;
 import dh.projetointegradorctd.backend.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

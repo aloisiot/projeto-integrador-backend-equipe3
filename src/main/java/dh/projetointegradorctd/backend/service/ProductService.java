@@ -1,7 +1,7 @@
 package dh.projetointegradorctd.backend.service;
 
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
-import dh.projetointegradorctd.backend.model.dataStorage.Product;
+import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
