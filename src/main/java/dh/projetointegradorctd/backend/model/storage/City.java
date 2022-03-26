@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_cidades")
+@Table(name = "tb_cities")
 public class City extends DataBaseEntity {
 
     @Id

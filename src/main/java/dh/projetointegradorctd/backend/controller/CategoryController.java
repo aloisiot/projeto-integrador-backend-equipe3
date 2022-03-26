@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Category;
+import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

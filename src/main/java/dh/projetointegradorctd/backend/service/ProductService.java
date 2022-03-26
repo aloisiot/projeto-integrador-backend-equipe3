@@ -11,13 +11,15 @@ import java.util.List;
 @Service
 public class ProductService extends TemplateCrudService<Product> {
 
+    private final ProductRepository repository;
+
     @Autowired
     public ProductService(ProductRepository repository) {
         super(repository);
+        this.repository = (ProductRepository) super.repository;
     }
 
     public List<Product> findAllByCategoryId(Long categoryId) throws ResorceNotFoundException {
-        ProductRepository repository = (ProductRepository) super.repository;
         List<Product> products = repository.findAllByCategoryId(categoryId);
         if(products.isEmpty()) {
             throw new ResorceNotFoundException();
@@ -26,7 +28,6 @@ public class ProductService extends TemplateCrudService<Product> {
     }
 
     public List<Product> findAllByCityId(Long cityId) throws ResorceNotFoundException {
-        ProductRepository repository = (ProductRepository) super.repository;
         List<Product> products = repository.findAllByCityId(cityId);
         if(products.isEmpty()) {
             throw new ResorceNotFoundException();

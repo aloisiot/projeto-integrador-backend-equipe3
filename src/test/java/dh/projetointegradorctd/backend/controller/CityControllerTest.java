@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.City;
+import dh.projetointegradorctd.backend.model.storage.City;
 import dh.projetointegradorctd.backend.repository.CityRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +84,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoBuscarPorId_entaoHttpStatus200() throws URISyntaxException {
+    public void quandoBuscarPorId_entaoHttpStatus200() {
         Long id = cidadeEntityFactory().getId();
         ResponseEntity<City> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT + id ),
@@ -98,7 +98,7 @@ public class CityControllerTest {
     @Test
     public void quandoBuscarPorIdFalhar_entaoNoContent() {
         // Quando o ID nao existe na base de dados
-        Long id = (long) - 1;
+        long id = - 1;
         ResponseEntity<City> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT +  "/" + id ),
                 City.class
@@ -109,7 +109,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoBuscarTodos_entaoStatus200 () throws URISyntaxException {
+    public void quandoBuscarTodos_entaoStatus200 () {
         cidadeEntityFactory(); // Garante que exista algum registro antes que o teste seja executado.
         var response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -120,7 +120,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoAtualizar_entaoStatus200() throws URISyntaxException {
+    public void quandoAtualizar_entaoStatus200() {
         City city = cidadeEntityFactory();
         city.setCountry("YY");
         HttpEntity<City> entity = new HttpEntity<>(city);
@@ -135,7 +135,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoAtualizarFalhar_entaoNoContent () throws URISyntaxException {
+    public void quandoAtualizarFalhar_entaoNoContent () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         City city = new City();
         city.setId((long) - 1);

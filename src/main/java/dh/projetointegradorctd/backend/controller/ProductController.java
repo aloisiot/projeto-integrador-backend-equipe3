@@ -15,20 +15,21 @@ import java.util.List;
 @RequestMapping(value = "/products", produces = "application/json;charset=UTF-8")
 public class ProductController extends TemplateCrudController<Product> {
 
+    private final ProductService service;
+
     @Autowired
     public ProductController(ProductService service) {
         super(service);
+        this.service = (ProductService) super.service;
     }
 
     @GetMapping("/by-category/{categoryId}")
     public ResponseEntity<List<Product>> findAllByCategory(@PathVariable Long categoryId) {
-        ProductService service = (ProductService) super.service;
         return ResponseEntity.ok(service.findAllByCategoryId(categoryId));
     }
 
     @GetMapping("/by-city/{cityId}")
     public ResponseEntity<List<Product>> findAllByCity(@PathVariable Long cityId) {
-        ProductService service = (ProductService) super.service;
         return ResponseEntity.ok(service.findAllByCityId(cityId));
     }
 }

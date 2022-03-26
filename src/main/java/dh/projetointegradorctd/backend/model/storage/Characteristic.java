@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
 import lombok.Getter;
 import lombok.Setter;
