@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_categorias")
+@Table(name = "tb_categories")
 public class Category extends DataBaseEntity {
 
     @Id

@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.service;
 
-import dh.projetointegradorctd.backend.model.dataStorage.City;
+import dh.projetointegradorctd.backend.model.storage.City;
 import dh.projetointegradorctd.backend.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

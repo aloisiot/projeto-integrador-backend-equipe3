@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Image;
+import dh.projetointegradorctd.backend.model.storage.Image;
 import dh.projetointegradorctd.backend.repository.ImageRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,7 +84,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void quandoBuscarPorId_entaoHttpStatus200() throws URISyntaxException {
+    public void quandoBuscarPorId_entaoHttpStatus200() {
         Long id = imageEntityFactory().getId();
         ResponseEntity<Image> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT + id ),
@@ -98,7 +98,7 @@ public class ImageControllerTest {
     @Test
     public void quandoBuscarPorIdFalhar_entaoNoContent() {
         // Quando o ID nao existe na base de dados
-        Long id = (long) - 1;
+        long id = - 1;
         ResponseEntity<Image> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT +  "/" + id ),
                 Image.class
@@ -109,7 +109,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void quandoBuscarTodos_entaoStatus200 () throws URISyntaxException {
+    public void quandoBuscarTodos_entaoStatus200 () {
         imageEntityFactory(); // Garante que exista algum registro antes que o teste seja executado.
         var response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -120,7 +120,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void quandoAtualizar_entaoStatus200() throws URISyntaxException {
+    public void quandoAtualizar_entaoStatus200()  {
         Image image = imageEntityFactory();
         image.setTitle("atualizado-test");
         HttpEntity<Image> entity = new HttpEntity<>(image);
@@ -135,7 +135,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void quandoAtualizarFalhar_entaoNoContent () throws URISyntaxException {
+    public void quandoAtualizarFalhar_entaoNoContent () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Image image = new Image();
         image.setId((long) - 1);

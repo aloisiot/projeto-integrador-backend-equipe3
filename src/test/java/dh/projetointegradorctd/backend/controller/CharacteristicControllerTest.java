@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Characteristic;
+import dh.projetointegradorctd.backend.model.storage.Characteristic;
 import dh.projetointegradorctd.backend.repository.CharacteristicRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,7 +83,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoBuscarPorId_entaoHttpStatus200() throws URISyntaxException {
+    public void quandoBuscarPorId_entaoHttpStatus200() {
         Long id = caracteristicaEntityFactory().getId();
         ResponseEntity<Characteristic> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT + id ),
@@ -97,7 +97,7 @@ public class CharacteristicControllerTest {
     @Test
     public void quandoBuscarPorIdFalhar_entaoNoContent() {
         // Quando o ID nao existe na base de dados
-        Long id = (long) - 1;
+        long id = - 1;
         ResponseEntity<Characteristic> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT +  "/" + id ),
                 Characteristic.class
@@ -108,7 +108,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoBuscarTodos_entaoStatus200 () throws URISyntaxException {
+    public void quandoBuscarTodos_entaoStatus200 () {
         caracteristicaEntityFactory(); // Garante que exista algum registro antes que o teste seja executado.
         var response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -119,7 +119,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoAtualizar_entaoStatus200() throws URISyntaxException {
+    public void quandoAtualizar_entaoStatus200() {
         Characteristic characteristic = caracteristicaEntityFactory();
         characteristic.setName("atualizado-test");
         HttpEntity<Characteristic> entity = new HttpEntity<>(characteristic);
@@ -134,7 +134,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoAtualizarFalhar_entaoNoContent () throws URISyntaxException {
+    public void quandoAtualizarFalhar_entaoNoContent () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Characteristic characteristic = new Characteristic();
         characteristic.setId((long) - 1);

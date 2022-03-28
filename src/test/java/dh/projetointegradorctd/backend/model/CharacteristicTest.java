@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.model;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Characteristic;
+import dh.projetointegradorctd.backend.model.storage.Characteristic;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;

@@ -1,0 +1,26 @@
+package dh.projetointegradorctd.backend.service;
+
+import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
+import dh.projetointegradorctd.backend.model.actor.Client;
+import dh.projetointegradorctd.backend.repository.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ClientService extends TemplateCrudService<Client> {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public ClientService(ClientRepository repository) {
+        super(repository);
+    }
+
+    @Override
+    public Client save(Client client) throws UnprocessableEntityException {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        return super.save(client);
+    }
+}

@@ -15,10 +15,13 @@ public class Role implements GrantedAuthority {
     @NotNull
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private Role.Authority authority;
 
-    @Override
     public String getAuthority() {
         return this.authority.name();
+    }
+
+    public enum Authority {
+        ADMIN, CLIENT
     }
 }

@@ -1,13 +1,14 @@
-package dh.projetointegradorctd.backend.response;
+package dh.projetointegradorctd.backend.dto;
 
 import dh.projetointegradorctd.backend.model.auth.User;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Getter
-public class TokenResponse {
+public class TokenDto implements Serializable {
 
 	@NotBlank
 	private final String token;
@@ -18,7 +19,7 @@ public class TokenResponse {
 	@NotNull
 	private final User userDetails;
 
-	public TokenResponse(String token, String type, User userDetails) {
+	public TokenDto(String token, String type, User userDetails) {
 		this.token = token;
 		this.type = type;
 		this.userDetails = userDetails;

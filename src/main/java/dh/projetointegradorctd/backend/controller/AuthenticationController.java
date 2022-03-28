@@ -4,7 +4,7 @@ import dh.projetointegradorctd.backend.exception.security.UnauthorizedException;
 import dh.projetointegradorctd.backend.repository.UserRepository;
 import dh.projetointegradorctd.backend.request.SignUpForm;
 import dh.projetointegradorctd.backend.request.SignInForm;
-import dh.projetointegradorctd.backend.response.TokenResponse;
+import dh.projetointegradorctd.backend.dto.TokenDto;
 import dh.projetointegradorctd.backend.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class AuthenticationController {
 	private UserRepository userRepository;
 
 	@PostMapping("/sign-in")
-	public ResponseEntity<TokenResponse> signIn (@RequestBody @Valid SignInForm form) throws UnauthorizedException {
+	public ResponseEntity<TokenDto> signIn (@RequestBody @Valid SignInForm form) throws UnauthorizedException {
 		return ResponseEntity.ok(authService.signIn(form));
 	}
 

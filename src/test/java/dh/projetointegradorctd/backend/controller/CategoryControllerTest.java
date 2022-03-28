@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Category;
+import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.repository.CategoryRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,7 +69,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoBuscarPorId_entaoHttpStatus200() throws URISyntaxException {
+    public void quandoBuscarPorId_entaoHttpStatus200() {
         Long id = categoriaEntityFactory().getId();
         ResponseEntity<Category> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT + id ),
@@ -83,7 +83,7 @@ public class CategoryControllerTest {
     @Test
     public void quandoBuscarPorIdFalhar_entaoNoContent() {
         // Quando o ID nao existe na base de dados
-        Long id = (long) - 1;
+        long id = - 1;
         ResponseEntity<Category> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT +  "/" + id ),
                 Category.class
@@ -94,7 +94,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoBuscarTodos_entaoStatus200 () throws URISyntaxException {
+    public void quandoBuscarTodos_entaoStatus200 () {
         categoriaEntityFactory(); // Garante que exista algum registro antes que o teste seja executado.
         var response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -105,7 +105,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoAtualizar_entaoStatus200() throws URISyntaxException {
+    public void quandoAtualizar_entaoStatus200() {
         Category category = categoriaEntityFactory();
         category.setDescription("atualizado-test");
         HttpEntity<Category> entity = new HttpEntity<>(category);
@@ -120,7 +120,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoAtualizarFalhar_entaoNoContent () throws URISyntaxException {
+    public void quandoAtualizarFalhar_entaoNoContent () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Category category = new Category();
         category.setId((long) - 1);

@@ -1,13 +1,12 @@
 package dh.projetointegradorctd.backend.security;
 
-import dh.projetointegradorctd.backend.model.auth.Authority;
+import dh.projetointegradorctd.backend.model.auth.Role;
 import dh.projetointegradorctd.backend.repository.UserRepository;
 import dh.projetointegradorctd.backend.service.UserDetailsServiceImpl;
 import dh.projetointegradorctd.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
+public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -47,14 +46,16 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		String ADMIN = Role.Authority.ADMIN.name();
+
 		http.cors()
 				.and().authorizeRequests()
+				.antMatchers( "/users").hasAuthority(ADMIN)
+				.antMatchers( "/reservations").authenticated()
 				.antMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
 				.antMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
-				.antMatchers(HttpMethod.POST, "/users").permitAll()
-				.antMatchers(HttpMethod.GET, "/users").hasAuthority(Authority.ADMIN.name())
 				.antMatchers(HttpMethod.GET).permitAll()
-				.anyRequest().hasAuthority(Authority.ADMIN.name())
+				.anyRequest().hasAuthority(ADMIN)
 				.and().addFilterBefore(
 						new TokenAuthenticationFilter(tokenService, userRepository),
 						UsernamePasswordAuthenticationFilter.class

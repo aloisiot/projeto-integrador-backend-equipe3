@@ -1,9 +1,9 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.dataStorage.Category;
-import dh.projetointegradorctd.backend.model.dataStorage.Characteristic;
-import dh.projetointegradorctd.backend.model.dataStorage.Image;
-import dh.projetointegradorctd.backend.model.dataStorage.Product;
+import dh.projetointegradorctd.backend.model.storage.Category;
+import dh.projetointegradorctd.backend.model.storage.Characteristic;
+import dh.projetointegradorctd.backend.model.storage.Image;
+import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.repository.CategoryRepository;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
 import org.junit.Test;
@@ -79,7 +79,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() throws URISyntaxException {
+    public void quandoCriar_entaoHttpStatus201() {
         Product product = getValidProduto();
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.postForEntity(
@@ -121,7 +121,7 @@ public class ProductControllerTest {
     @Test
     public void quandoBuscarPorIdFalhar_entaoNoContent() {
         // Quando o ID nao existe na base de dados
-        Long id = (long) - 1;
+        long id =  - 1;
         ResponseEntity<Product> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT +  "/" + id ),
                 Product.class

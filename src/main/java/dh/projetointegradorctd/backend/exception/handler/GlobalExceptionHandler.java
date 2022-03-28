@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.xml.bind.ValidationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,7 +21,7 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(UnprocessableEntityException.class)
+    @ExceptionHandler({UnprocessableEntityException.class, ValidationException.class})
     public ResponseEntity<?> unprocessableEntityHandler(UnprocessableEntityException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)

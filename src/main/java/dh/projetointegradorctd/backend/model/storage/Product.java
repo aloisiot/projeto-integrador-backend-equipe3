@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_produtos")
+@Table(name = "tb_products")
 public class Product extends DataBaseEntity {
 
     @Id
@@ -21,10 +21,12 @@ public class Product extends DataBaseEntity {
 
     @NotBlank
     @Size(min = 10, max = 255, message = "comprimento invalido para o campo descricao")
+    @Column(nullable = false)
     private String description;
 
     @NotBlank
     @Size(min = 5, max = 255,message = "comprimento invalido para o campo nome")
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
@@ -35,6 +37,7 @@ public class Product extends DataBaseEntity {
     private City city;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", nullable = false)
     private List<Image> images;
 
     @ManyToMany

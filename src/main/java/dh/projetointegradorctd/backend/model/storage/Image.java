@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model.dataStorage;
+package dh.projetointegradorctd.backend.model.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_imagens")
+@Table(name = "tb_images")
 public class Image extends DataBaseEntity {
 
     @Id

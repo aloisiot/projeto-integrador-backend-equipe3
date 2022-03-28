@@ -3,7 +3,7 @@ package dh.projetointegradorctd.backend.controller;
 import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
 import dh.projetointegradorctd.backend.exception.global.EmpityRepositoryException;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
-import dh.projetointegradorctd.backend.model.dataStorage.DataBaseEntity;
+import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import dh.projetointegradorctd.backend.service.TemplateCrudService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;

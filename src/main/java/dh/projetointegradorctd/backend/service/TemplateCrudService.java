@@ -3,7 +3,7 @@ package dh.projetointegradorctd.backend.service;
 import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
 import dh.projetointegradorctd.backend.exception.global.EmpityRepositoryException;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
-import dh.projetointegradorctd.backend.model.dataStorage.DataBaseEntity;
+import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

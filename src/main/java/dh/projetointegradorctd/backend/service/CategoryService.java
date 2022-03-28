@@ -2,7 +2,7 @@ package dh.projetointegradorctd.backend.service;
 
 import dh.projetointegradorctd.backend.exception.global.EmpityRepositoryException;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
-import dh.projetointegradorctd.backend.model.dataStorage.Category;
+import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.repository.CategoryRepository;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
