@@ -33,4 +33,10 @@ public class AuthenticationController {
 		authService.signUp(form);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+//  TODO - Implementar serviço de checagem de email para validar cadastro
+//	@GetMapping("check-email/{userId}/{emailHash}")
+//	public ResponseEntity<Boolean> check(@PathVariable long userId, @PathVariable int emailHash) {
+//		return ResponseEntity.ok(authService.checkEmail(userId, emailHash));
+//	}
 }

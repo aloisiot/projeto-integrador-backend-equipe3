@@ -2,6 +2,7 @@ package dh.projetointegradorctd.backend.model.auth;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 class RoleTest {
     private static Validator validator;
 
