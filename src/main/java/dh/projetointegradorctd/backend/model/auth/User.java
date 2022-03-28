@@ -22,25 +22,25 @@ public class User extends DataBaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O nome não pode ser nulo")
     @Column(length = 100)
-    @Size(min = 2, max = 100, message = "comprimento invalido para o campo nome")
+    @Size(min = 2, max = 100, message = "Comprimento invalido para o campo nome")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "O ultimo nome não deve estár em branco")
     @Column(length = 100)
-    @Size(min = 2, max = 100, message = "comprimento invalido para o campo sobrenome")
+    @Size(min = 2, max = 100, message = "Comprimento invalido para o campo sobrenome")
     private String lastname;
 
     @Email(message = "email invalido")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "A senha não deve estár em branco")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 8, max = 255, message = "a senha deve conter entre 8 e 255 caracters")
+    @Size(min = 8, max = 255, message = "A senha deve conter entre 8 e 255 caracters")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Autorizações não devem ser nulas para o usuário")
     @Embedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> authorities;

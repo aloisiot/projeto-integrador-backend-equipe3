@@ -1,4 +1,4 @@
-package dh.projetointegradorctd.backend.model;
+package dh.projetointegradorctd.backend.model.storage;
 
 import dh.projetointegradorctd.backend.model.storage.City;
 import org.junit.jupiter.api.BeforeAll;
