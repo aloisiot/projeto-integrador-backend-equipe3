@@ -50,10 +50,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 		http.cors()
 				.and().authorizeRequests()
+				.antMatchers( "/users").hasAuthority(ADMIN)
+				.antMatchers( "/reservations").authenticated()
 				.antMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
 				.antMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
-				.antMatchers(HttpMethod.POST, "/reservations").authenticated()
-				.antMatchers( "/users").hasAuthority(ADMIN)
 				.antMatchers(HttpMethod.GET).permitAll()
 				.anyRequest().hasAuthority(ADMIN)
 				.and().addFilterBefore(

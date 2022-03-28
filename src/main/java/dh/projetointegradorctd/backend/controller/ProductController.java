@@ -1,13 +1,11 @@
 package dh.projetointegradorctd.backend.controller;
 
+import dh.projetointegradorctd.backend.dto.DateRangeDto;
 import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,10 @@ public class ProductController extends TemplateCrudController<Product> {
     @GetMapping("/by-city/{cityId}")
     public ResponseEntity<List<Product>> findAllByCity(@PathVariable Long cityId) {
         return ResponseEntity.ok(service.findAllByCityId(cityId));
+    }
+
+    @GetMapping("by-available-date-range")
+    public ResponseEntity<List<Product>> findByAvailableDateRange(@RequestBody DateRangeDto dateRange) {
+        return ResponseEntity.ok(service.findByAvailableDateRange(dateRange));
     }
 }
