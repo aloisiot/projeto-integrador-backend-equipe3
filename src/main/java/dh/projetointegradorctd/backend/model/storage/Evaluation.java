@@ -39,6 +39,6 @@ public class Evaluation extends DataBaseEntity {
 
     @NotNull(message = "A avaliacao deve fazer referência a um cliente")
     @ManyToOne
-    @JsonIgnoreProperties({"favoriteProducts"})
+    @JsonIgnoreProperties({"favoriteProducts", "authorities"})
     private Client client;
 }

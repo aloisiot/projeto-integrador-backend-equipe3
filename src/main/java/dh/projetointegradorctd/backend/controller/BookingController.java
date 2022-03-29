@@ -15,7 +15,7 @@ import java.util.List;
  * Controlador de reservas
  */
 @RestController
-@RequestMapping(value = "/reservations", produces = "application/json;charset=UTF-8")
+@RequestMapping(value = "/bookings", produces = "application/json;charset=UTF-8")
 public class BookingController extends TemplateCrudController<Booking> {
 
     /**

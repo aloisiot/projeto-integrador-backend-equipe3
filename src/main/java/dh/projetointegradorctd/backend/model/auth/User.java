@@ -40,9 +40,8 @@ public class User extends DataBaseEntity implements UserDetails {
     @Size(min = 8, max = 255, message = "A senha deve conter entre 8 e 255 caracters")
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER)
     @NotNull(message = "Autorizações não devem ser nulas para o usuário")
-    @Embedded
-    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> authorities;
 
     @Override

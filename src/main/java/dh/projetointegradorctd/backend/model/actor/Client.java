@@ -24,6 +24,7 @@ public class Client extends User {
     @PrePersist
     private void setClientAuthorities() {
         Role role = new Role();
+        role.setId((long) 2);
         role.setAuthority(Role.Authority.CLIENT);
         super.setAuthorities(Set.of(role));
     }
