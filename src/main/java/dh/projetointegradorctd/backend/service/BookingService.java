@@ -7,7 +7,6 @@ import dh.projetointegradorctd.backend.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,7 +21,7 @@ public class BookingService extends TemplateCrudService<Booking> {
     }
 
     public List<Booking> findAllByClientId(Long clientId) {
-        List<Booking> bookings = repository.findByClientId(clientId);
+        List<Booking> bookings = repository.findAllByClientId(clientId);
         if(bookings.isEmpty()) {
             throw new ResorceNotFoundException("Não encontrada nenhuma reserva para esse usuário");
         }
@@ -30,9 +29,7 @@ public class BookingService extends TemplateCrudService<Booking> {
     }
 
     public List<Booking> findAllByDateRange(DateRangeDto dateRange) {
-        LocalDate startDate = dateRange.getStartDate();
-        LocalDate endDate = dateRange.getEndDate();
-        List<Booking> bookings = repository.findByDateRange(startDate, endDate);
+        List<Booking> bookings = repository.findAllByDateRange(dateRange.getStartDate(), dateRange.getEndDate());
         if(bookings.isEmpty()) {
             throw new ResorceNotFoundException("Não encontrada nenhuma reserva para esse intervalo de datas");
         }

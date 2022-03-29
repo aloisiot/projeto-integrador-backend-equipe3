@@ -34,17 +34,19 @@ public class ProductController extends TemplateCrudController<Product> {
         return ResponseEntity.ok(service.findAllByCityId(cityId));
     }
 
-    @GetMapping("by-available-date-range")
+    @GetMapping("/by-available-date-range/{startDate}/{endDate}")
     @Operation(summary = "Busca produtos com base em em intervalo de datas disponivel")
-    public ResponseEntity<List<Product>> findByAvailableDateRange(@RequestBody DateRangeDto dateRange) {
-        return ResponseEntity.ok(service.findByAvailableDateRange(dateRange));
+    public ResponseEntity<List<Product>> findByAvailableDateRange(
+            @PathVariable String startDate, @PathVariable String endDate
+    ) {
+        return ResponseEntity.ok(service.findByAvailableDateRange(DateRangeDto.instanceOf(startDate, endDate)));
     }
 
-    @GetMapping("/by-city/{cityId}/and-available-date-range")
+    @GetMapping("/by-city/{cityId}/and-available-date-range/{startDate}/{endDate}")
     @Operation(summary = "Busca produtos com base em em intervalo de datas disponivel e em uma cidade especifica")
     public ResponseEntity<List<Product>> findAllByCityAndAvailableDateRange(
-            @PathVariable Long cityId, @RequestBody DateRangeDto dateRange
+            @PathVariable Long cityId, @PathVariable String startDate, @PathVariable String endDate
     ) {
-        return ResponseEntity.ok(service.findAllByCityAndAvailableDateRange(cityId, dateRange));
+        return ResponseEntity.ok(service.findAllByCityAndAvailableDateRange(cityId, DateRangeDto.instanceOf(startDate, endDate)));
     }
 }

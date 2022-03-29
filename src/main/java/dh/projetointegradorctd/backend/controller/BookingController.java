@@ -3,7 +3,6 @@ package dh.projetointegradorctd.backend.controller;
 import dh.projetointegradorctd.backend.dto.DateRangeDto;
 import dh.projetointegradorctd.backend.model.storage.Booking;
 import dh.projetointegradorctd.backend.service.BookingService;
-import dh.projetointegradorctd.backend.service.TemplateCrudService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,13 +46,16 @@ public class BookingController extends TemplateCrudController<Booking> {
 
     /**
      * Busca as reservas em um intervalo de datas específico
-     * @param dateRange Instância de DateRangeDto. Intervalo de datas buscado (data inicial, data final)
+     * @param startDate Data inicial do intervalo
+     * @param endDate Data final do intervalo
      * @return Lista de reservas
      */
-    @GetMapping("by-date-range")
+    @GetMapping("by-date-range/{startDate}/{endDate}")
     @Operation(summary = "Busca reservas por intervalo de datas")
-    public ResponseEntity<?> findAllByDateRange(@RequestBody DateRangeDto dateRange) {
-        List<Booking> bookings = service.findAllByDateRange(dateRange);
+    public ResponseEntity<?> findAllByDateRange(
+            @PathVariable String startDate, @PathVariable String endDate
+    ) {
+        List<Booking> bookings = service.findAllByDateRange(DateRangeDto.instanceOf(startDate, endDate));
         return ResponseEntity.ok(bookings);
     }
 }
