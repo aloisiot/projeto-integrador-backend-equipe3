@@ -22,6 +22,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static dh.projetointegradorctd.backend.util.context.Url.getLocalUrl;
@@ -54,18 +55,19 @@ public class ProductControllerTest {
     @Autowired
     private CharacteristicRepository characteristicRepository;
 
-    public Product getValidProduto() {
+    public Product validProdutoFactory() {
         Product product = new Product();
         product.setName("product-teste");
         product.setDescription("descricao-teste");
 
-        Category category = categoryRepository.save(new Category());
+        Long categoryId = categoryRepository.getMaxId();
+        Category category = new Category();
+        category.setId(categoryId);
         product.setCategory(category);
 
+        Long cityId = cityRepository.getMaxId();
         City city = new City();
-        city.setName("city-test");
-        city.setCountry("BR");
-        cityRepository.save(city);
+        city.setId(cityId);
         product.setCity(city);
 
         Image image = new Image();
@@ -85,13 +87,13 @@ public class ProductControllerTest {
     }
 
     // Persiste e retorna uma entidade Product Valida
-    public Product getProdutoEntity() {
-        return productRepository.save(getValidProduto());
+    public Product produtoEntityFactory() {
+        return productRepository.save(validProdutoFactory());
     }
 
     @Test
     public void quandoCriar_entaoHttpStatus201() {
-        Product product = getValidProduto();
+        Product product = validProdutoFactory();
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -99,6 +101,7 @@ public class ProductControllerTest {
                 Product.class
         );
         product = response.getBody();
+        assert product != null;
         assertNotNull(product.getId());
         assertEquals(201, response.getStatusCodeValue());
     }
@@ -106,7 +109,7 @@ public class ProductControllerTest {
     @Test
     public void quandoCriarFalhar_entaoHttpStatus422 ()  {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
-        Product product = getProdutoEntity();
+        Product product = produtoEntityFactory();
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -118,12 +121,13 @@ public class ProductControllerTest {
 
     @Test
     public void quandoBuscarPorId_entaoHttpStatus200() {
-        Long id = getProdutoEntity().getId();
+        Long id = produtoEntityFactory().getId();
         ResponseEntity<Product> response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT + id ),
                 Product.class
         );
         Product product = response.getBody();
+        assert product != null;
         assertNotNull(product.getId());
         assertEquals(200, response.getStatusCodeValue());
     }
@@ -143,18 +147,18 @@ public class ProductControllerTest {
 
     @Test
     public void quandoBuscarTodos_entaoStatus200 () {
-        getProdutoEntity(); // Garante que exista algum registro antes que o teste seja executado.
+        produtoEntityFactory(); // Garante que exista algum registro antes que o teste seja executado.
         var response = this.testRestTemplate.getForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
                 List.class
         );
-        assertTrue(response.getBody().size() > 0);
+        assertTrue(Objects.requireNonNull(response.getBody()).size() > 0);
         assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
     public void quandoAtualizar_entaoStatus200() {
-        Product product = getProdutoEntity();
+        Product product = produtoEntityFactory();
         product.setDescription("atualizado-test");
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.exchange(
@@ -163,14 +167,14 @@ public class ProductControllerTest {
                 entity,
                 Product.class
         );
-        assertEquals(response.getBody().getDescription(), "atualizado-test");
+        assertEquals(Objects.requireNonNull(response.getBody()).getDescription(), "atualizado-test");
         assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
     public void quandoAtualizarFalhar_entaoNoContent () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
-        Product product = getValidProduto();
+        Product product = validProdutoFactory();
         product.setId((long) - 1);
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.exchange(

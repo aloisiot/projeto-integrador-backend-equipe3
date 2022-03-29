@@ -29,7 +29,7 @@ public class Product extends DataBaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotNull(message = "Deve haver uma categoria para o produto")
     private Category category;
 
