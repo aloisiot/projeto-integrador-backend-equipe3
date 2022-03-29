@@ -1,5 +1,7 @@
 package dh.projetointegradorctd.backend.model.storage;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,9 +34,11 @@ public class Evaluation extends DataBaseEntity {
 
     @NotNull(message = "A avaliacao deve fazer referência a um produto")
     @ManyToOne
+    @JsonIgnoreProperties({"images", "characteristics", "city", "category"})
     private Product product;
 
     @NotNull(message = "A avaliacao deve fazer referência a um cliente")
     @ManyToOne
+    @JsonIgnoreProperties({"favoriteProducts"})
     private Client client;
 }

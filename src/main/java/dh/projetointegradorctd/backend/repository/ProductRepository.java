@@ -23,4 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.id not in :ids")
     List<Product> findAllByIdIsNotIn(@Param("ids") Set<Long> ids);
+
+    @Query("select max(p.id) from Product p")
+    Long getMaxId();
 }

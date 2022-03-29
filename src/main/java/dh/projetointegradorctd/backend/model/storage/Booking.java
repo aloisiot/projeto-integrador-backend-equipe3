@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_reservations")
+@Table(name = "tb_bookings")
 public class Booking extends DataBaseEntity {
 
     @Id

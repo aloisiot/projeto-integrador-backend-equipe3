@@ -23,7 +23,7 @@ public class EvaluationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(evaluation));
     }
 
-    @GetMapping("/{produtoId}")
+    @GetMapping("/by-product/{produtoId}")
     @Operation(summary = "Busca todas as avaliações de um produto com base no ID do produto")
     private ResponseEntity<List<Evaluation>> findAllByProductId(@PathVariable Long produtoId) {
         return ResponseEntity.ok(service.findAllByProductId(produtoId));
