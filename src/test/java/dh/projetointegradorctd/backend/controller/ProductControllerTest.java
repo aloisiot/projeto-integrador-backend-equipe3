@@ -1,10 +1,9 @@
 package dh.projetointegradorctd.backend.controller;
 
-import dh.projetointegradorctd.backend.model.storage.Category;
-import dh.projetointegradorctd.backend.model.storage.Characteristic;
-import dh.projetointegradorctd.backend.model.storage.Image;
-import dh.projetointegradorctd.backend.model.storage.Product;
+import dh.projetointegradorctd.backend.model.storage.*;
 import dh.projetointegradorctd.backend.repository.CategoryRepository;
+import dh.projetointegradorctd.backend.repository.CharacteristicRepository;
+import dh.projetointegradorctd.backend.repository.CityRepository;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
@@ -50,6 +48,12 @@ public class ProductControllerTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private CharacteristicRepository characteristicRepository;
+
     public Product getValidProduto() {
         Product product = new Product();
         product.setName("product-teste");
@@ -58,6 +62,12 @@ public class ProductControllerTest {
         Category category = categoryRepository.save(new Category());
         product.setCategory(category);
 
+        City city = new City();
+        city.setName("city-test");
+        city.setCountry("BR");
+        cityRepository.save(city);
+        product.setCity(city);
+
         Image image = new Image();
         image.setTitle("image-test");
         image.setUrl("http://url.test/");
@@ -65,6 +75,7 @@ public class ProductControllerTest {
 
         Characteristic characteristic = new Characteristic();
         characteristic.setName("characteristic-test");
+        characteristicRepository.save(characteristic);
         product.setCharacteristics(List.of(characteristic));
 
         Set<ConstraintViolation<Product>> violacoes = validator.validate(product);
@@ -93,10 +104,9 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus400 ()  {
+    public void quandoCriarFalhar_entaoHttpStatus422 ()  {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
-        Product product = getValidProduto();
-        product.setId((long) 1);
+        Product product = getProdutoEntity();
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),

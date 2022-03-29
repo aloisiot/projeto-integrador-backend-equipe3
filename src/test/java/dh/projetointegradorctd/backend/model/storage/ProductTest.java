@@ -1,7 +1,5 @@
 package dh.projetointegradorctd.backend.model.storage;
 
-import dh.projetointegradorctd.backend.model.storage.Category;
-import dh.projetointegradorctd.backend.model.storage.Product;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +31,7 @@ class ProductTest {
     public void quandoNomeEDescricaoExiste() {
         Product product = new Product();
         product.setCategory(new Category());
+        product.setCity(new City());
         product.setName("product-test");
         product.setDescription("descricao-test");
         Set<ConstraintViolation<Product>> violacoes = validator.validate(product);
