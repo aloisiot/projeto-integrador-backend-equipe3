@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.security;
 
-import dh.projetointegradorctd.backend.exception.security.UnauthorizedException;
+import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import dh.projetointegradorctd.backend.model.auth.User;
 import dh.projetointegradorctd.backend.repository.UserRepository;
 import dh.projetointegradorctd.backend.service.TokenService;
@@ -45,12 +45,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private void authenticateUser(String token) throws UnauthorizedException {
+	private void authenticateUser(String token) throws ForbiddenException {
 		Long userId = tokenService.getUserIdFromToken(token);
 		User user = userRepository.findById(userId).orElse(null);
 
 		if(user == null) {
-			throw new UnauthorizedException();
+			throw new ForbiddenException();
 		}
 
 		UsernamePasswordAuthenticationToken authentication =
