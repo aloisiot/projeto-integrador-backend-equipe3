@@ -12,12 +12,14 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("select r from Booking r where r.client.id = :id")
-    List<Booking> findByClientId(@Param("id") Long id);
+    List<Booking> findAllByClientId(@Param("id") Long id);
 
     @Query("select r from Booking r " +
             "where" +
                 "(:startDate between r.startDate and r.endDate)" +
             "or" +
-                "(:endDate between r.startDate and r.endDate)")
-    List<Booking> findByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+                "(:endDate between r.startDate and r.endDate)" +
+            "or" +
+                "(:startDate <= r.startDate and :endDate >= r.endDate)")
+    List<Booking> findAllByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }

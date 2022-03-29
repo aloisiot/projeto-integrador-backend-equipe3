@@ -30,10 +30,11 @@ public class Product extends DataBaseEntity {
     private String name;
 
     @ManyToOne
-    @NotNull
+    @NotNull(message = "Deve haver uma categoria para o produto")
     private Category category;
 
     @ManyToOne
+    @NotNull(message = "Deve haver uma cidade para o produto")
     private City city;
 
     @OneToMany(cascade = CascadeType.ALL)
