@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Table(name = "tb_reservations")
-public class Reservation extends DataBaseEntity {
+public class Booking extends DataBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

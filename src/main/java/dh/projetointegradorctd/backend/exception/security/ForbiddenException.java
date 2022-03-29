@@ -1,7 +1,7 @@
 package dh.projetointegradorctd.backend.exception.security;
 
-public class UnauthorizedException extends Exception{
-    public UnauthorizedException() {
+public class ForbiddenException extends RuntimeException {
+    public ForbiddenException() {
         super("Nao autorizado");
     }
 }

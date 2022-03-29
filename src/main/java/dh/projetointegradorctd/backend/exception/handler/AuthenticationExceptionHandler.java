@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.exception.handler;
 
-import dh.projetointegradorctd.backend.exception.security.UnauthorizedException;
+import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class AuthenticationExceptionHandler {
 
     @ExceptionHandler({
-            UnauthorizedException.class,
+            ForbiddenException.class,
             UsernameNotFoundException.class,
             AuthenticationException.class
     })
-    public ResponseEntity<?> unautorizedHandler(UnauthorizedException exception) {
+    public ResponseEntity<?> unautorizedHandler(ForbiddenException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)

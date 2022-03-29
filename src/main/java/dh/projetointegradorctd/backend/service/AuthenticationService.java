@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.service;
 
-import dh.projetointegradorctd.backend.exception.security.UnauthorizedException;
+import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
+import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import dh.projetointegradorctd.backend.model.auth.User;
 import dh.projetointegradorctd.backend.request.SignUpForm;
@@ -25,7 +26,7 @@ public class AuthenticationService {
     @Autowired
     private ClientService clientService;
 
-    public TokenDto signIn (SignInForm form) throws UnauthorizedException {
+    public TokenDto signIn (SignInForm form) throws ForbiddenException {
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(form.getEmail(), form.getPassword());
 
@@ -37,8 +38,8 @@ public class AuthenticationService {
         try {
             Long id = tokenService.getUserIdFromToken(token);
             user = clientService.findById(id);
-        } catch (Exception e) {
-            throw new UnauthorizedException();
+        } catch (ResorceNotFoundException e) {
+            throw new ForbiddenException();
         }
 
         return new TokenDto(token, "Bearer", user);
