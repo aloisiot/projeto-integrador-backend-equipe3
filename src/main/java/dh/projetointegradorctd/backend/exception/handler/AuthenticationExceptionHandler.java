@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @ControllerAdvice
 public class AuthenticationExceptionHandler {
 
@@ -22,5 +24,12 @@ public class AuthenticationExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{\"error\" : \"" + exception.getMessage() + "\"}");
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<?> duplicatedEmailErrorHandler(SQLIntegrityConstraintViolationException e) {
+        return ResponseEntity
+                .badRequest()
+                .body("{\"error\": \"Email duplicado\"}");
     }
 }

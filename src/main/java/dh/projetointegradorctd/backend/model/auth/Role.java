@@ -7,10 +7,15 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Entity
 @Getter
 @Setter
-@Embeddable
+@Table(name = "tb_roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "authority"}) })
 public class Role implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull(message = "A autorização do perfil deve ser especificada")
     @Column(length = 20)
