@@ -49,20 +49,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		Long userId = tokenService.getUserIdFromToken(token);
 		User user = userRepository.findById(userId).orElse(null);
 
-		if(user == null) {
-			throw new ForbiddenException();
-		}
+		if(user == null) throw new ForbiddenException();
 
-		UsernamePasswordAuthenticationToken authentication =
-				new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+		UsernamePasswordAuthenticationToken authentication;
+		authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 	private String recoverToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
-		if (token == null || !token.startsWith("Bearer ")) {
-			return null;
-		}
+		if (token == null || !token.startsWith("Bearer ")) return null;
 		
 		return token.substring(7);
 	}
