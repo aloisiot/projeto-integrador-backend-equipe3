@@ -10,11 +10,11 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class SignInForm {
 
-	@NotEmpty
+	@NotEmpty(message = "O email deve ser especificado")
 	@Email(message = "email invalido")
 	private String email;
 
-	@NotEmpty
+	@NotEmpty(message = "A senha deve ser especificada")
 	private String password;
 
 }
