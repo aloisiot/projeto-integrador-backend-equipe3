@@ -22,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (usuario.isEmpty()) {
 			throw new UsernameNotFoundException("credenciais invalidas");
 		}
-		return usuario.orElse(null);
+		return usuario.get();
 	}
 }

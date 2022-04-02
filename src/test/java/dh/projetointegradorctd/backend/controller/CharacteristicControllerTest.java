@@ -5,6 +5,7 @@ import dh.projetointegradorctd.backend.repository.CharacteristicRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -30,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CharacteristicControllerTest {
 
-    private final String END_POINT = "characteristics/";
+    @Value("${api-base-path}/characteristics/")
+    private String END_POINT;
+
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
@@ -56,7 +59,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() {
+    public void whenCreate_thenHttpStatus201() {
         HttpEntity<Characteristic> entity = new HttpEntity<>(getValidCaracteristica());
         ResponseEntity<Characteristic> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -69,7 +72,7 @@ public class CharacteristicControllerTest {
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus400 () {
+    public void whenCreateFails_whenHttpStatus422 () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Characteristic characteristic = new Characteristic();
         characteristic.setId((long) 1);

@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.model.storage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dh.projetointegradorctd.backend.exception.global.InvalidDateRangeException;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,4 +39,15 @@ public class Booking extends DataBaseEntity {
     @NotNull(message = "A reserva deve conter um produto associado")
     private Product product;
 
+    @PrePersist
+    @PreUpdate
+    private void checkDateRange() throws InvalidDateRangeException {
+        if(this.startDate.isAfter(this.endDate)) {
+            throw new InvalidDateRangeException();
+        }
+    }
+
+    public int compareByStartDate(Booking other) {
+        return this.getStartDate().isAfter(other.getStartDate()) ? 1 : -1;
+    }
 }

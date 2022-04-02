@@ -1,6 +1,5 @@
 package dh.projetointegradorctd.backend.model.storage;
 
-import dh.projetointegradorctd.backend.model.storage.City;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;

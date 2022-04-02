@@ -34,8 +34,8 @@ class UserTest {
 
         user.setEmail("user@server.com");
         violations = validator.validate(user);
-        emailVionations = violations.stream().filter(
-                violation -> violation.getMessage().equals("email invalido"));
+        emailVionations = violations.stream()
+                .filter(violation -> violation.getMessage().equals("email invalido"));
 
         assertThat(emailVionations.toArray().length).isZero();
     }

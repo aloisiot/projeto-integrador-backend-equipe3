@@ -3,6 +3,7 @@ package dh.projetointegradorctd.backend.service;
 import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
 import dh.projetointegradorctd.backend.exception.global.EmpityRepositoryException;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
+import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
 import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -17,7 +18,7 @@ public abstract class TemplateCrudService<T extends  DataBaseEntity> {
         this.repository = repository;
     }
 
-    public T save(T entity) throws UnprocessableEntityException {
+    public T save(T entity) throws Exception {
         if(entity.getId() != null && repository.existsById(entity.getId())){
             throw new UnprocessableEntityException("o parametro id nao deve ser especificado");
         }

@@ -3,8 +3,10 @@ package dh.projetointegradorctd.backend.controller;
 import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.repository.CategoryRepository;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -15,8 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static dh.projetointegradorctd.backend.util.context.Url.getLocalUrl;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +32,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
-    private final String END_POINT = "categories/";
+
+    @Value("${api-base-path}/categories/")
+    private String END_POINT;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -36,26 +45,40 @@ public class CategoryControllerTest {
     @LocalServerPort
     private int serverPort;
 
+    private Category validCategoriaFactory() {
+        Category category = new Category();
+        category.setDescription("description-test");
+        category.setQualification("qualification-test");
+        category.setUrlImage("http://valid-url.com");
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<Category>> violations = validator.validate(category);
+        assertEquals(0, violations.size());
+
+        return category;
+    }
+
     // Persiste e retorna uma entidade Category
     private Category categoriaEntityFactory() {
-        return categoryRepository.save(new Category());
+        return categoryRepository.save(validCategoriaFactory());
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() {
-        HttpEntity<Category> entity = new HttpEntity<>(new Category());
+    public void whenCreate_thenHttpStatus201() {
+        HttpEntity<Category> entity = new HttpEntity<>(validCategoriaFactory());
         ResponseEntity<Category> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
                 entity,
                 Category.class
         );
         Category category = response.getBody();
+        assert category != null;
         assertNotNull(category.getId());
         assertEquals(201, response.getStatusCodeValue());
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus400 () {
+    public void whenCreateFails_whenHttpStatus422 () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Category category = new Category();
         category.setId((long) 1);
@@ -76,6 +99,7 @@ public class CategoryControllerTest {
                 Category.class
         );
         Category category = response.getBody();
+        assert category != null;
         assertNotNull(category.getId());
         assertEquals(200, response.getStatusCodeValue());
     }
@@ -100,7 +124,7 @@ public class CategoryControllerTest {
                 getLocalUrl(this.serverPort, END_POINT),
                 List.class
         );
-        assertTrue(response.getBody().size() > 0);
+        assertTrue(Objects.requireNonNull(response.getBody()).size() > 0);
         assertEquals(200, response.getStatusCodeValue());
     }
 
@@ -115,7 +139,7 @@ public class CategoryControllerTest {
                 entity,
                 Category.class
         );
-        assertEquals(response.getBody().getDescription(), "atualizado-test");
+        assertEquals(Objects.requireNonNull(response.getBody()).getDescription(), "atualizado-test");
         assertEquals(200, response.getStatusCodeValue());
     }
 

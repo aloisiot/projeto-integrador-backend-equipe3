@@ -9,10 +9,12 @@ import dh.projetointegradorctd.backend.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -20,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Optional;
 
 import static dh.projetointegradorctd.backend.util.context.Url.getLocalUrl;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EvaluationControllerTest {
-    private final String END_POINT = "evaluations/";
+
+    @Value("${api-base-path}/evaluations/")
+    private String END_POINT;
 
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -49,7 +54,7 @@ class EvaluationControllerTest {
 
     private Evaluation validEvaluationFactory() {
         Long productId = productRepository.getMaxId();
-        Product product = productRepository.findById(productId).get();
+        Product product = productRepository.findById(productId).orElse(null);
 
         Long clientId = clientRepository.getMaxId();
         Client client = clientRepository.findById(clientId).orElse(null);
@@ -63,7 +68,7 @@ class EvaluationControllerTest {
         }
 
         Evaluation evaluation = new Evaluation();
-        evaluation.setStarts(5);
+        evaluation.setStars(5);
         evaluation.setComment("comment-test");
         evaluation.setProduct(product);
         evaluation.setClient(client);
@@ -75,31 +80,29 @@ class EvaluationControllerTest {
     }
 
     @Test
-    public void whenCreate_status201() {
+    public void whenCreate_thenHttpStatus201() {
         Evaluation evaluation = validEvaluationFactory();
         HttpEntity<Evaluation> entity = new HttpEntity<>(evaluation);
-        ResponseEntity<Evaluation> response = this.testRestTemplate.postForEntity(
-                getLocalUrl(this.serverPort, END_POINT),
-                entity,
-                Evaluation.class
-        );
+        String url = getLocalUrl(this.serverPort, END_POINT);
+        var response =
+                this.testRestTemplate.postForEntity(url, entity, Evaluation.class);
+
         evaluation = response.getBody();
+        assert evaluation != null : "Falha na requisição - retorno nulo";
         assertNotNull(evaluation.getId());
         assertEquals(201, response.getStatusCodeValue());
     }
 
     @Test
-    public void whenFindByUserId_status200() {
+    public void whenFindByUserId_thenStatus200() {
         Evaluation evaluation = validEvaluationFactory();
+        String url = getLocalUrl(this.serverPort, END_POINT);
+        var entity = new HttpEntity<>(evaluation);
+        var response =
+                this.testRestTemplate.postForEntity(url, entity, Evaluation.class);
 
-        HttpEntity<Evaluation> entity = new HttpEntity<>(evaluation);
-        ResponseEntity<Evaluation> response = this.testRestTemplate.postForEntity(
-                getLocalUrl(this.serverPort, END_POINT),
-                entity,
-                Evaluation.class
-        );
         evaluation = response.getBody();
-
+        assert evaluation != null : "Falha na requisição - retorno nulo";
         Long productId = evaluation.getProduct().getId();
         List<Evaluation> evaluations = evaluationRepository.findByProductId(productId);
         for(Evaluation e: evaluations) {
@@ -108,27 +111,34 @@ class EvaluationControllerTest {
     }
 
     @Test
-    public void whenCreateFailure_status422 ()  {
+    public void whenCreateFails_thenHttpStatus422 ()  {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Evaluation evaluation = evaluationEntityFactory();
-        HttpEntity<Evaluation> entity = new HttpEntity<>(evaluation);
-        ResponseEntity<Evaluation> response = this.testRestTemplate.postForEntity(
-                getLocalUrl(this.serverPort, END_POINT),
-                entity,
-                Evaluation.class
-        );
+        String url = getLocalUrl(this.serverPort, END_POINT);
+        var entity = new HttpEntity<>(evaluation);
+        var response =
+                this.testRestTemplate.postForEntity(url, entity,Evaluation.class);
+
         assertEquals(422, response.getStatusCodeValue());
     }
 
     @Test
-    public void whernFindByProductId_status200() {
+    public void whernFindAllByProductId_thenStatus200() {
         Long id = evaluationEntityFactory().getProduct().getId();
-        ResponseEntity<List> response = this.testRestTemplate.getForEntity(
-                getLocalUrl(this.serverPort, END_POINT + "by-product/" + id ),
-                List.class
-        );
-        List<Evaluation> product = response.getBody();
+        String url = getLocalUrl(this.serverPort, END_POINT + "by-product/" + id );
+        var response = this.testRestTemplate.getForEntity( url, List.class);
+        var product = response.getBody();
+        assert product != null : "Falha na requisição - retorno nulo";
         assertNotEquals(product.size(), 0);
         assertEquals(200, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void whenDeleteById_thenStatus204() {
+        long id = evaluationEntityFactory().getId();
+        String url = getLocalUrl(this.serverPort, END_POINT + "/" + id);
+        this.testRestTemplate.delete(url);
+        Optional<Evaluation> evaluation = evaluationRepository.findById(id);
+        assertTrue(evaluation.isEmpty());
     }
 }

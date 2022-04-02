@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.controller;
 
 import dh.projetointegradorctd.backend.dto.DateRangeDto;
+import dh.projetointegradorctd.backend.exception.global.InvalidDateRangeException;
 import dh.projetointegradorctd.backend.model.storage.Booking;
 import dh.projetointegradorctd.backend.service.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 /**
  * Controlador de reservas
@@ -54,7 +54,7 @@ public class BookingController extends TemplateCrudController<Booking> {
     @Operation(summary = "Busca reservas por intervalo de datas")
     public ResponseEntity<?> findAllByDateRange(
             @PathVariable String startDate, @PathVariable String endDate
-    ) {
+    ) throws InvalidDateRangeException {
         List<Booking> bookings = service.findAllByDateRange(DateRangeDto.instanceOf(startDate, endDate));
         return ResponseEntity.ok(bookings);
     }

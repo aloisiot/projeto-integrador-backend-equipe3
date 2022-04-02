@@ -1,6 +1,8 @@
 package dh.projetointegradorctd.backend.exception.handler;
 
+import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
 import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
+import org.hibernate.procedure.ParameterMisuseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +21,24 @@ public class AuthenticationExceptionHandler {
             UsernameNotFoundException.class,
             AuthenticationException.class
     })
-    public ResponseEntity<?> unautorizedHandler(ForbiddenException exception) {
+    public ResponseEntity<String> unautorizedHandler(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{\"error\" : \"" + exception.getMessage() + "\"}");
     }
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<?> duplicatedEmailErrorHandler(SQLIntegrityConstraintViolationException e) {
+    @ExceptionHandler(DuplicatedEmailException.class)
+    public ResponseEntity<String> duplicatedEmailErrorHandler(Exception exception) {
         return ResponseEntity
                 .badRequest()
-                .body("{\"error\": \"Email duplicado\"}");
+                .body("{\"error\": \"" + exception.getMessage() + "\"}");
+    }
+
+    @ExceptionHandler(ParameterMisuseException.class)
+    public ResponseEntity<String> paramiterMisuseErrorHandler(Exception exception) {
+        return ResponseEntity
+                .badRequest()
+                .body("{\"error\" : \"" + exception.getMessage() + "\"}");
     }
 }

@@ -31,7 +31,7 @@ public class AuthenticationController {
 	 * @return Resposta http sem conteúdo - status 201
 	 */
 	@PostMapping("/sign-up")
-	public ResponseEntity<?> signUp (@RequestBody SignUpForm form) {
+	public ResponseEntity<?> signUp (@RequestBody SignUpForm form) throws Exception {
 		authService.signUp(form);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
