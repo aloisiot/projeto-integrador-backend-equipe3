@@ -2,6 +2,7 @@ package dh.projetointegradorctd.backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.*;
@@ -13,6 +14,7 @@ public class MvcConfigurer implements WebMvcConfigurer {
     @Value("${api-base-path}")
     private String basePath;
 
+    @Profile(value = {"dev"})
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
