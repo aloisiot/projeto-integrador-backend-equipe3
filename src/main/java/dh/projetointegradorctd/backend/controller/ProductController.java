@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.controller;
 
 import dh.projetointegradorctd.backend.dto.DateRangeDto;
+import dh.projetointegradorctd.backend.exception.global.InvalidDateRangeException;
 import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,15 +39,17 @@ public class ProductController extends TemplateCrudController<Product> {
     @Operation(summary = "Busca produtos com base em em intervalo de datas disponivel")
     public ResponseEntity<List<Product>> findByAvailableDateRange(
             @PathVariable String startDate, @PathVariable String endDate
-    ) {
-        return ResponseEntity.ok(service.findByAvailableDateRange(DateRangeDto.instanceOf(startDate, endDate)));
+    ) throws InvalidDateRangeException {
+        DateRangeDto dateRange = DateRangeDto.instanceOf(startDate, endDate);
+        return ResponseEntity.ok(service.findByAvailableDateRange(dateRange));
     }
 
     @GetMapping("/by-city/{cityId}/and-available-date-range/{startDate}/{endDate}")
     @Operation(summary = "Busca produtos com base em em intervalo de datas disponivel e em uma cidade especifica")
     public ResponseEntity<List<Product>> findAllByCityAndAvailableDateRange(
             @PathVariable Long cityId, @PathVariable String startDate, @PathVariable String endDate
-    ) {
-        return ResponseEntity.ok(service.findAllByCityAndAvailableDateRange(cityId, DateRangeDto.instanceOf(startDate, endDate)));
+    ) throws InvalidDateRangeException {
+        DateRangeDto dateRange = DateRangeDto.instanceOf(startDate, endDate);
+        return ResponseEntity.ok(service.findAllByCityAndAvailableDateRange(cityId, dateRange));
     }
 }

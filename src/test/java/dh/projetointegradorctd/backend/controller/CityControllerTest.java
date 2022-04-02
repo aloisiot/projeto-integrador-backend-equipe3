@@ -5,6 +5,7 @@ import dh.projetointegradorctd.backend.repository.CityRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -30,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CityControllerTest {
 
-    private final String END_POINT = "cities/";
+    @Value("${api-base-path}/cities/")
+    private String END_POINT;
+
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
@@ -57,7 +60,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() {
+    public void whenCreate_thenHttpStatus201() {
         HttpEntity<City> entity = new HttpEntity<>(getValidCidade());
         ResponseEntity<City> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -70,7 +73,7 @@ public class CityControllerTest {
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus400 () {
+    public void whenCreateFails_whenHttpStatus422 () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         City city = new City();
         city.setId((long) 1);

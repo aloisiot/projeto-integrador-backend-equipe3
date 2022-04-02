@@ -1,5 +1,6 @@
 package dh.projetointegradorctd.backend.model.storage;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,6 +44,10 @@ public class Product extends DataBaseEntity {
 
     @ManyToMany
     private List<Characteristic> characteristics;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "product")
+    @JsonIgnore
+    private List<Evaluation> evaluations;
 
     private String latitude;
     private String longitude;

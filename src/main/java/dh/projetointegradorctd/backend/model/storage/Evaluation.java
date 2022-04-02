@@ -1,7 +1,6 @@
 package dh.projetointegradorctd.backend.model.storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,15 +29,15 @@ public class Evaluation extends DataBaseEntity {
     @Max(value = 5, message = "O maximo de estrelas é 5")
     @Min(value = 0, message = "O minimo de estrelas é 0")
     @Column(nullable = false)
-    private Integer starts;
+    private Integer stars;
 
     @NotNull(message = "A avaliacao deve fazer referência a um produto")
     @ManyToOne
-    @JsonIgnoreProperties({"images", "characteristics", "city", "category"})
+    @JsonIgnoreProperties({"images", "characteristics", "city", "category", "evaluations"})
     private Product product;
 
     @NotNull(message = "A avaliacao deve fazer referência a um cliente")
     @ManyToOne
-    @JsonIgnoreProperties({"favoriteProducts", "authorities"})
+    @JsonIgnoreProperties({"favoriteProducts", "authorities", "email"})
     private Client client;
 }

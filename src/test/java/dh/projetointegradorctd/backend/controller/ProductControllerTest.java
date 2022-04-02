@@ -1,19 +1,20 @@
 package dh.projetointegradorctd.backend.controller;
 
+import dh.projetointegradorctd.backend.BackEndApplicationTests;
 import dh.projetointegradorctd.backend.model.storage.*;
-import dh.projetointegradorctd.backend.repository.CategoryRepository;
-import dh.projetointegradorctd.backend.repository.CharacteristicRepository;
-import dh.projetointegradorctd.backend.repository.CityRepository;
-import dh.projetointegradorctd.backend.repository.ProductRepository;
+import dh.projetointegradorctd.backend.repository.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -33,9 +34,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 public class ProductControllerTest {
-    private final String END_POINT = "products/";
 
-    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @Value("${api-base-path}/products/")
+    private String END_POINT;
+
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -55,6 +58,23 @@ public class ProductControllerTest {
     @Autowired
     private CharacteristicRepository characteristicRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Before
+    public void setUp() {
+        BackEndApplicationTests.setUp(
+                cityRepository,
+                categoryRepository,
+                productRepository,
+                clientRepository,
+                roleRepository
+        );
+    }
+
     public Product validProdutoFactory() {
         Product product = new Product();
         product.setName("product-teste");
@@ -65,7 +85,7 @@ public class ProductControllerTest {
         category.setId(categoryId);
         product.setCategory(category);
 
-        Long cityId = cityRepository.getMaxId();
+        long cityId = cityRepository.getMaxId();
         City city = new City();
         city.setId(cityId);
         product.setCity(city);
@@ -92,7 +112,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() {
+    public void whenCreate_thenHttpStatus201() {
         Product product = validProdutoFactory();
         HttpEntity<Product> entity = new HttpEntity<>(product);
         ResponseEntity<Product> response = this.testRestTemplate.postForEntity(
@@ -107,7 +127,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus422 ()  {
+    public void whenCreateFails_whenHttpStatus422()  {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Product product = produtoEntityFactory();
         HttpEntity<Product> entity = new HttpEntity<>(product);
@@ -173,7 +193,6 @@ public class ProductControllerTest {
 
     @Test
     public void quandoAtualizarFalhar_entaoNoContent () {
-        // Quando solicitação post contem um id, entao UnprocessableEntityException
         Product product = validProdutoFactory();
         product.setId((long) - 1);
         HttpEntity<Product> entity = new HttpEntity<>(product);
@@ -185,5 +204,60 @@ public class ProductControllerTest {
         );
         assertNull(response.getBody());
         assertEquals(204, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void whenFindAllByCity () {
+        long cityId = cityRepository.getMaxId();
+        String relativePath = END_POINT + "/by-city/"+ cityId;
+        String url = getLocalUrl(this.serverPort, relativePath);
+        var response = this.testRestTemplate.getForEntity(url, List.class);
+        boolean sucess = HttpStatus.OK == response.getStatusCode();
+        boolean noContent = HttpStatus.NO_CONTENT == response.getStatusCode();
+        assertTrue(sucess || noContent);
+    }
+
+    @Test
+    public void whenFindAllByCategory_thenStatusOK () {
+        long categoryId = categoryRepository.getMaxId();
+        String relativePath = END_POINT + "by-category/" + categoryId;
+        String url = getLocalUrl(this.serverPort, relativePath);
+        var response = this.testRestTemplate.getForEntity(url, List.class);
+        assert response.getBody() != null : "A requisição falhou - corpo resposta nulo";
+        assertTrue(response.hasBody());
+        assertTrue(response.getBody().size() > 0);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void whenFindAllByCategoryFail_thenStatus204 () {
+        long categoryId = categoryRepository.getMaxId() + 1;
+        String relativePath = END_POINT + "by-category/" + categoryId;
+        String url = getLocalUrl(this.serverPort, relativePath);
+        var response = this.testRestTemplate.getForEntity(url, List.class);
+        assertFalse(response.hasBody());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    public void whenFindAllByAvailableDateRange () {
+        long categoryId = categoryRepository.getMaxId();
+        String relativePath = END_POINT + "by-available-date-range/2022-10-12/2022-10-14";
+        String url = getLocalUrl(this.serverPort, relativePath);
+        var response = this.testRestTemplate.getForEntity(url, List.class);
+        boolean sucess = HttpStatus.OK == response.getStatusCode();
+        boolean noContent = HttpStatus.NO_CONTENT == response.getStatusCode();
+        assertTrue(sucess || noContent);
+    }
+
+    @Test
+    public void whenFindAllByAvailableDateRangeAndCity () {
+        long cityId = cityRepository.getMaxId();
+        String relativePath = END_POINT + "/by-city/"+ cityId +"/and-available-date-range/2022-10-12/2022-10-14";
+        String url = getLocalUrl(this.serverPort, relativePath);
+        var response = this.testRestTemplate.getForEntity(url, List.class);
+        boolean sucess = HttpStatus.OK == response.getStatusCode();
+        boolean noContent = HttpStatus.NO_CONTENT == response.getStatusCode();
+        assertTrue(sucess || noContent);
     }
 }

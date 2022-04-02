@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.service;
 
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
+import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
 import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import dh.projetointegradorctd.backend.model.auth.User;
@@ -45,7 +46,7 @@ public class AuthenticationService {
         return new TokenDto(token, "Bearer", user);
     }
 
-    public void signUp (SignUpForm form) {
+    public void signUp (SignUpForm form) throws Exception {
         Client client = new Client();
         client.setEmail(form.getEmail());
         client.setPassword(form.getPassword());

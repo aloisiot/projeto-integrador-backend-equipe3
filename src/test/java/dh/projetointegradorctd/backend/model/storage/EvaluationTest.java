@@ -50,21 +50,21 @@ class EvaluationTest {
     @Test
     public void starsValidation() {
         Evaluation evaluation = new Evaluation();
-        evaluation.setStarts(6);
+        evaluation.setStars(6);
         Set<ConstraintViolation<Evaluation>> violations = validator.validate(evaluation);
         Stream<ConstraintViolation<Evaluation>> starsVionations = violations.stream().filter(
                 violation -> violation.getMessage().equals("O maximo de estrelas é 5"));
 
         assertThat(starsVionations.toArray().length).isEqualTo(1);
 
-        evaluation.setStarts(-1);
+        evaluation.setStars(-1);
         violations = validator.validate(evaluation);
         starsVionations = violations.stream().filter(
                 violation -> violation.getMessage().equals("O minimo de estrelas é 0"));
 
         assertThat(starsVionations.toArray().length).isEqualTo(1);
 
-        evaluation.setStarts(2);
+        evaluation.setStars(2);
         violations = validator.validate(evaluation);
         starsVionations = violations.stream().filter(
                 violation ->

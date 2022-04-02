@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -31,7 +32,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
-    private final String END_POINT = "categories/";
+
+    @Value("${api-base-path}/categories/")
+    private String END_POINT;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -61,7 +64,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoCriar_entaoHttpStatus201() {
+    public void whenCreate_thenHttpStatus201() {
         HttpEntity<Category> entity = new HttpEntity<>(validCategoriaFactory());
         ResponseEntity<Category> response = this.testRestTemplate.postForEntity(
                 getLocalUrl(this.serverPort, END_POINT),
@@ -75,7 +78,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void quandoCriarFalhar_entaoHttpStatus400 () {
+    public void whenCreateFails_whenHttpStatus422 () {
         // Quando solicitação post contem um id, entao UnprocessableEntityException
         Category category = new Category();
         category.setId((long) 1);

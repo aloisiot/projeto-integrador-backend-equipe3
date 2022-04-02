@@ -1,5 +1,6 @@
 package dh.projetointegradorctd.backend.model.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dh.projetointegradorctd.backend.model.auth.Role;
 import dh.projetointegradorctd.backend.model.auth.User;
 import dh.projetointegradorctd.backend.model.storage.Product;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"accountNonExpired", "accountNonLocked", "credentialsNonExpired", "username", "enabled"})
 public class Client extends User {
 
     @OneToMany(fetch = FetchType.LAZY)

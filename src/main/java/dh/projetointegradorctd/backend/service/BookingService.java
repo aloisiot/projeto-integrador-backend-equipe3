@@ -9,6 +9,7 @@ import dh.projetointegradorctd.backend.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,12 +31,14 @@ public class BookingService extends TemplateCrudService<Booking> {
      * @throws UnprocessableEntityException Caso exista uma reserva no mesmo intervalo de datas.
      */
     @Override
-    public Booking save(Booking booking) throws ParameterMisuseException {
+    public Booking save(Booking booking) throws Exception {
         DateRangeDto dateRange = new DateRangeDto(booking.getStartDate(), booking.getEndDate());
-        if(findAllByDateRange(dateRange).size() > 0) {
+        try {
+            findAllByDateRange(dateRange);
             throw new ParameterMisuseException("Ja existe uma reserva para esse intervalo de datas");
+        } catch (ResorceNotFoundException e) {
+            return super.save(booking);
         }
-        return super.save(booking);
     }
 
     /**

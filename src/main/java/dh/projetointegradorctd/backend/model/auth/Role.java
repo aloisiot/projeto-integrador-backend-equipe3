@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "authority"}) })
+@Table(name = "tb_roles")
 public class Role implements GrantedAuthority {
 
     @Id

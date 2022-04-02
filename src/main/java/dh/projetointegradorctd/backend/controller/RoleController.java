@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Controlador do serviço de perfis do usuário
+ * Controlador RSET do serviço de perfis do usuário.
+ * Produz respostas application/json;charset=UTF-8.
  */
 @RestController
 @RequestMapping(value = "/roles", produces = "application/json;charset=UTF-8")
