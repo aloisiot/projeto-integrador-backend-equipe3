@@ -77,7 +77,7 @@ public class ProductService extends TemplateCrudService<Product> {
             return findAll();
         }
         Set<Long> productsId = bookings.stream()
-                .map(Booking::getId)
+                .map(booking -> booking.getProduct().getId())
                 .collect(Collectors.toSet());
 
         return repository.findAllByIdIsNotIn(productsId);

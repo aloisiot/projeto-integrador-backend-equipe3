@@ -23,7 +23,7 @@ public class AuthenticationExceptionHandler {
     })
     public ResponseEntity<String> unautorizedHandler(Exception exception) {
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{\"error\" : \"" + exception.getMessage() + "\"}");
     }
