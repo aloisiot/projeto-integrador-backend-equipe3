@@ -57,7 +57,6 @@ class BookingControllerTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private long clientId;
     private final String startDateStr = "2022-10-01";
     private final String endDateStr = "2022-10-11";
 
@@ -75,7 +74,7 @@ class BookingControllerTest {
         booking.setStartTime(LocalTime.now());
         booking.setStartDate(dateRange.getStartDate());
         booking.setEndDate(dateRange.getEndDate());
-        this.clientId = clientRepository.getMaxId();
+        long clientId = clientRepository.getMaxId();
         Client client = new Client();
         client.setId(clientId);
         booking.setClient(client);
@@ -84,17 +83,6 @@ class BookingControllerTest {
         product.setId(productId);
         booking.setProduct(product);
         assertNotNull(bookingRepository.save(booking).getId());
-    }
-
-    @Test
-    void whenFindAllByClientId_thenStatusOk() {
-        String relativePath = END_POINT + "by-client/" + this.clientId;
-        String url = getLocalUrl(this.serverPort, relativePath);
-        var response = this.testRestTemplate.getForEntity(url, List.class);
-        var bookings = response.getBody();
-        assert bookings != null;
-        assertTrue(bookings.size() > 0);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test

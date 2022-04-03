@@ -9,7 +9,6 @@ import dh.projetointegradorctd.backend.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +48,7 @@ public class BookingService extends TemplateCrudService<Booking> {
      */
     public List<Booking> findAllByClientId(Long clientId) throws ResorceNotFoundException {
         List<Booking> bookings = repository.findAllByClientId(clientId);
+
         if(bookings.isEmpty()) {
             throw new ResorceNotFoundException("Não encontrada nenhuma reserva para esse usuário");
         }
