@@ -3,9 +3,8 @@ package dh.projetointegradorctd.backend.controller;
 import dh.projetointegradorctd.backend.BackEndApplicationTests;
 import dh.projetointegradorctd.backend.model.storage.*;
 import dh.projetointegradorctd.backend.repository.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -31,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 public class ProductControllerTest {
 
@@ -64,7 +61,7 @@ public class ProductControllerTest {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         BackEndApplicationTests.setUp(
                 cityRepository,

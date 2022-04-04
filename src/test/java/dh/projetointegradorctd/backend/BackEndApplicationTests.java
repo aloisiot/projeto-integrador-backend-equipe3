@@ -6,22 +6,11 @@ import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.model.storage.City;
 import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.repository.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Set;
 
-@ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BackEndApplicationTests {
-
-	@Test
-	public void contextLoad(){}
 
 	public static void setUp(
 			CityRepository cityRepository,

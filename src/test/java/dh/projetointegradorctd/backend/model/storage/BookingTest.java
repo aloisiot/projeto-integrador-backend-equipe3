@@ -4,7 +4,6 @@ import dh.projetointegradorctd.backend.model.actor.Client;
 import dh.projetointegradorctd.backend.repository.BookingRepository;
 import dh.projetointegradorctd.backend.repository.ClientRepository;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +33,6 @@ public class BookingTest {
     @Autowired
     private BookingRepository bookingRepository;
 
-    @BeforeEach
     void setUp() {
         long productId = productRepository.getMaxId();
         this.product = productRepository.findById(productId).orElse(null);
@@ -45,6 +43,7 @@ public class BookingTest {
 
     @Test
     public void productAtributes() {
+        setUp();
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Booking booking = new Booking();
         Set<ConstraintViolation<Booking>> violations = validator.validate(booking);

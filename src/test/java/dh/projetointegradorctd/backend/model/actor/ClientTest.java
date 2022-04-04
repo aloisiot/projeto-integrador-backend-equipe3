@@ -15,7 +15,7 @@ import java.util.List;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ClientTest {
+public class ClientTest {
 
     private Client client;
 
