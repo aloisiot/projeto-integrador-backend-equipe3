@@ -12,6 +12,7 @@ phases:
 artifacts:
   files:
     - target/*.jar
+    - Procfile
   discard-paths: yes
 
 cache:
