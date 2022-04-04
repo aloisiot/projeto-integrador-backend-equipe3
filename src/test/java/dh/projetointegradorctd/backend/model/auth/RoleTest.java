@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-class RoleTest {
+public class RoleTest {
     private static Validator validator;
 
     @BeforeAll

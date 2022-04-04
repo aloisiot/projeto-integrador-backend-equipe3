@@ -16,9 +16,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-@SpringBootTest
-class ProductTest {
+public class ProductTest {
 
     private static Validator validator;
 

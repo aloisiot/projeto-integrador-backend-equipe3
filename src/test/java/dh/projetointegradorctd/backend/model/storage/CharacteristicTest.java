@@ -12,7 +12,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-class CharacteristicTest {
+public class CharacteristicTest {
     private static Validator validator;
 
     @BeforeAll

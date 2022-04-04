@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTest {
+public class CategoryTest {
     private static Validator validator;
 
     @BeforeAll
@@ -20,7 +20,7 @@ class CategoryTest {
     }
 
     @Test
-    void validateAtributes() {
+    public void validateAtributes() {
         Category category = new Category();
         Set<ConstraintViolation<Category>> violations = validator.validate(category);
 

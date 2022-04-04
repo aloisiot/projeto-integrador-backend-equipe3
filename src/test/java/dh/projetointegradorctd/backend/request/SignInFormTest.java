@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SignInFormTest {
+public class SignInFormTest {
     private static Validator validator;
 
     @BeforeAll
@@ -21,7 +21,7 @@ class SignInFormTest {
     }
 
     @Test
-    void validateEmail() {
+    public void validateEmail() {
         String emailIsEmpity = "O email deve ser especificado";
         String emailIsInvalid = "email invalido";
 
@@ -55,7 +55,7 @@ class SignInFormTest {
     }
 
     @Test
-    void validatePasswor() {
+    public void validatePasswor() {
         SignInForm signInForm = new SignInForm();
         signInForm.setPassword("dasS");
         Set<ConstraintViolation<SignInForm>> violations = validator.validate(signInForm);

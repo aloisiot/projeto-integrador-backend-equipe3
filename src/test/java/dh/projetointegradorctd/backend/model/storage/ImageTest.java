@@ -1,6 +1,5 @@
 package dh.projetointegradorctd.backend.model.storage;
 
-import dh.projetointegradorctd.backend.model.storage.Image;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,7 +13,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-class ImageTest {
+public class ImageTest {
 
     private static Validator validator;
 

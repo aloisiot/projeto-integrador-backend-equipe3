@@ -4,14 +4,11 @@ import dh.projetointegradorctd.backend.model.actor.Client;
 import dh.projetointegradorctd.backend.repository.BookingRepository;
 import dh.projetointegradorctd.backend.repository.ClientRepository;
 import dh.projetointegradorctd.backend.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -23,12 +20,10 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-class BookingTest {
+public class BookingTest {
     private Product product;
     private Client client;
-    private static Validator validator;
 
     @Autowired
     private ProductRepository productRepository;
@@ -38,11 +33,6 @@ class BookingTest {
 
     @Autowired
     private BookingRepository bookingRepository;
-
-    @BeforeAll
-    public static void setupValidatorInstance() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
 
     @BeforeEach
     void setUp() {
@@ -54,7 +44,8 @@ class BookingTest {
     }
 
     @Test
-    void productAtributes() {
+    public void productAtributes() {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Booking booking = new Booking();
         Set<ConstraintViolation<Booking>> violations = validator.validate(booking);
 
@@ -79,6 +70,5 @@ class BookingTest {
         assertNotNull(booking.getId());
         assertEquals(this.product.getId(), booking.getProduct().getId());
         assertEquals(this.client.getId(), booking.getClient().getId());
-
     }
 }

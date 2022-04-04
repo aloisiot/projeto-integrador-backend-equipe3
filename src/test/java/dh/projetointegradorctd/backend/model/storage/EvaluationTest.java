@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-class EvaluationTest {
+public class EvaluationTest {
     private static Validator validator;
 
     @BeforeAll
