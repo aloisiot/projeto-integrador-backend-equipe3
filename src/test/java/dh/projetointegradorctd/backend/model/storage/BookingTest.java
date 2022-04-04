@@ -1,9 +1,8 @@
 package dh.projetointegradorctd.backend.model.storage;
 
+import dh.projetointegradorctd.backend.BackEndApplicationTests;
 import dh.projetointegradorctd.backend.model.actor.Client;
-import dh.projetointegradorctd.backend.repository.BookingRepository;
-import dh.projetointegradorctd.backend.repository.ClientRepository;
-import dh.projetointegradorctd.backend.repository.ProductRepository;
+import dh.projetointegradorctd.backend.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,17 @@ public class BookingTest {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     void setUp() {
+        BackEndApplicationTests.setUp(cityRepository, categoryRepository, productRepository, clientRepository, roleRepository);
         long productId = productRepository.getMaxId();
         this.product = productRepository.findById(productId).orElse(null);
 

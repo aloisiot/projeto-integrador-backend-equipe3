@@ -1,8 +1,8 @@
 package dh.projetointegradorctd.backend.model.actor;
 
+import dh.projetointegradorctd.backend.BackEndApplicationTests;
 import dh.projetointegradorctd.backend.model.storage.Product;
-import dh.projetointegradorctd.backend.repository.ClientRepository;
-import dh.projetointegradorctd.backend.repository.ProductRepository;
+import dh.projetointegradorctd.backend.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,21 @@ public class ClientTest {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @BeforeEach
     void setUp() {
+        BackEndApplicationTests.setUp(cityRepository, categoryRepository, productRepository, clientRepository, roleRepository);
         Long productId = productRepository.getMaxId();
         Product product = productRepository.findById(productId).orElse(null);
         Long clientId = clientRepository.getMaxId();
