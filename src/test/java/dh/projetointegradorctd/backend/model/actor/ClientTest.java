@@ -38,7 +38,7 @@ public class ClientTest {
     private CategoryRepository categoryRepository;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         BackEndApplicationTests.setUp(cityRepository, categoryRepository, productRepository, clientRepository, roleRepository);
         Long productId = productRepository.getMaxId();
         Product product = productRepository.findById(productId).orElse(null);
@@ -50,12 +50,12 @@ public class ClientTest {
     }
 
     @Test
-    void getFavoriteProducts() {
+    public void getFavoriteProducts() {
         assertThat(this.client.getFavoriteProducts()).isNotNull();
     }
 
     @Test
-    void getClientAuthorities() {
+    public void getClientAuthorities() {
         client.getAuthorities().forEach(role ->
                 assertThat(role.getAuthority()).isEqualTo("CLIENT"));
     }

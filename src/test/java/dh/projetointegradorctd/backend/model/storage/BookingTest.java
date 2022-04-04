@@ -41,7 +41,7 @@ public class BookingTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    void setUp() {
+    public void setUp() {
         BackEndApplicationTests.setUp(cityRepository, categoryRepository, productRepository, clientRepository, roleRepository);
         long productId = productRepository.getMaxId();
         this.product = productRepository.findById(productId).orElse(null);
