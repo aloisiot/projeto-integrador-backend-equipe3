@@ -58,6 +58,23 @@ public class BookingService extends TemplateCrudService<Booking> {
     }
 
     /**
+     * Busca o registros de reservas com base no id do produto.
+     * @param productId ID do produto cujas reservas estão associadas .
+     * @return Lista de reservas relacionadas ao produto especificado.
+     * @throws ResorceNotFoundException - Caso nenhum registro seja encontrado
+     */
+    public List<Booking> findAllByProductId(Long productId) throws ResorceNotFoundException {
+        List<Booking> bookings = repository.findByProductId(productId);
+
+        if(bookings.isEmpty()) {
+            throw new ResorceNotFoundException("Não encontrada nenhuma reserva para esse usuário");
+        }
+        return bookings.stream()
+                .sorted(Booking::compareByStartDate)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Busca todas as reservas cujas datas inicial e final estão dentro de um intervalo de datas.
      * @param dateRange Intervalo de datas a ser base para a busca.
      * @return Lista de reservas dentro do intervalo de datas especificado.

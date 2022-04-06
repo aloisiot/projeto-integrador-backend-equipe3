@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.repository;
 
 import dh.projetointegradorctd.backend.model.storage.Booking;
+import dh.projetointegradorctd.backend.model.storage.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +12,10 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
+
+    @Query("select b from Booking b where b.product.id = :id")
+    List<Booking> findByProductId(@Param("id") Long id);
+
     @Query("select r from Booking r where r.client.id = :id")
     List<Booking> findAllByClientId(@Param("id") Long id);
 
