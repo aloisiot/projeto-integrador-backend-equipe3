@@ -1,6 +1,6 @@
 package dh.projetointegradorctd.backend.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +9,10 @@ import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
-public class MvcConfigurer implements WebMvcConfigurer {
+@ComponentScan("com.baeldung.web")
+public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${api-base-path}")
-    private String basePath;
+    public static final String BASE_PATH = "/api/v1";
 
     @Profile(value = {"dev"})
     @Override
@@ -20,6 +20,8 @@ public class MvcConfigurer implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("POST", "GET", "PUT", "DELETE", "OPTIONS");
+
+        WebMvcConfigurer.super.addCorsMappings(registry);
     }
 
     @Override
@@ -30,6 +32,6 @@ public class MvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.addPathPrefix(basePath, HandlerTypePredicate.forAnnotation(RestController.class));
+        configurer.addPathPrefix(BASE_PATH, HandlerTypePredicate.forAnnotation(RestController.class));
     }
 }
