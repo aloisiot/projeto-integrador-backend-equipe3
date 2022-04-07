@@ -57,6 +57,17 @@ public class BookingController {
     }
 
     /**
+     * Endpoint para a busca de reservas relacionadas a um produto com base em seu ID.
+     * @param productId ID do produto
+     * @return Lista de reservas relacionadas ao produto
+     */
+    @GetMapping("/by-product/{productId}")
+    @Operation(summary = "Busca reservas de um cliente com base em seu seu ID")
+    public ResponseEntity<List<Booking>> findAllByProductId(@PathVariable Long productId) {
+        return ResponseEntity.ok(service.findAllByProductId(productId));
+    }
+
+    /**
      * Busca as reservas em um intervalo de datas específico
      * @param startDate Data inicial do intervalo
      * @param endDate Data final do intervalo

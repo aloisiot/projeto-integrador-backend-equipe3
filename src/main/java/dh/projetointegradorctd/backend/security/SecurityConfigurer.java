@@ -5,7 +5,6 @@ import dh.projetointegradorctd.backend.repository.UserRepository;
 import dh.projetointegradorctd.backend.service.UserDetailsServiceImpl;
 import dh.projetointegradorctd.backend.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,12 +17,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static dh.projetointegradorctd.backend.config.WebConfig.BASE_PATH;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-	@Value("${api-base-path}")
-	private String basePath;
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -55,11 +53,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 		http.cors()
 				.and().authorizeRequests()
-				.antMatchers( basePath + "/users", basePath + "/roles").hasAuthority(ADMIN)
-				.antMatchers(HttpMethod.POST, basePath + "/bookings").hasAuthority(CLIENT)
-				.antMatchers(HttpMethod.POST, basePath + "/auth/sign-in").permitAll()
-				.antMatchers(HttpMethod.POST, basePath + "/auth/sign-up").permitAll()
-				.antMatchers(HttpMethod.POST, basePath + "/products/evaluations").hasAuthority(CLIENT)
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/auth/sign-in").permitAll()
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/auth/sign-up").permitAll()
+				.antMatchers( BASE_PATH + "/users", BASE_PATH + "/roles").hasAuthority(ADMIN)
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/bookings").hasAuthority(CLIENT)
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/products").hasAuthority(CLIENT)
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/evaluations").hasAuthority(CLIENT)
 				.antMatchers(HttpMethod.GET).permitAll()
 				.anyRequest().hasAuthority(ADMIN)
 				.and().addFilterBefore(
