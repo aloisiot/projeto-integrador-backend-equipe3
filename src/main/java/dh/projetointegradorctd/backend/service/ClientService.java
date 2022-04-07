@@ -1,5 +1,6 @@
 package dh.projetointegradorctd.backend.service;
 
+import dh.projetointegradorctd.backend.dto.FavoriteDto;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
 import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
 import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
@@ -43,5 +44,11 @@ public class ClientService extends TemplateCrudService<Client> {
             throw new ResorceNotFoundException();
         }
         return client.get().getFavoriteProducts();
+    }
+
+    public void addFavorite(FavoriteDto favoriteDto) {
+        Client client = findById(favoriteDto.getClientId());
+        client.getFavoriteProducts().add(favoriteDto.getProduct());
+        repository.save(client);
     }
 }
