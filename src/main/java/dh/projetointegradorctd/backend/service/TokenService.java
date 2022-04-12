@@ -20,12 +20,12 @@ public class TokenService {
 	private String secret;
 
 	public String generateToken(Authentication authentication) {
-		User logado = (User) authentication.getPrincipal();
+		User user = (User) authentication.getPrincipal();
 		Date expirationDate = new Date(System.currentTimeMillis() + Long.parseLong(expiration));
 		
 		return Jwts.builder()
 				.setIssuer("dh.projeto-integrador-ctd.backend")
-				.setSubject(logado.getId().toString())
+				.setSubject(user.getId().toString())
 				.setIssuedAt(expirationDate)
 				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();

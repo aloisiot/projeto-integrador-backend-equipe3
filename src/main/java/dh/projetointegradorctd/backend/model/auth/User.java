@@ -1,5 +1,6 @@
 package dh.projetointegradorctd.backend.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import lombok.Getter;

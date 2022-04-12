@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-
     @Query("select max(c.id) from Client c")
     Long getMaxId();
 }

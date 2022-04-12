@@ -1,14 +1,16 @@
 package dh.projetointegradorctd.backend.controller;
 
 import dh.projetointegradorctd.backend.dto.FavoriteDto;
+import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.service.ClientService;
+import dh.projetointegradorctd.backend.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Controlador REST para o serviço de clientes.
@@ -24,6 +26,9 @@ public class ClientController {
     @Autowired
     private ClientService service;
 
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * Endopoint para a busca de todos os produtos favoritos de um cliente com base no seu ID.
      * @param clientId ID do cliente cujos produtos seram buscados.
@@ -31,13 +36,25 @@ public class ClientController {
      */
     @GetMapping("/favorite-products/{clientId}")
     @Operation(summary = "Busca uma lista de produtos favoritos com base no ID do cliente")
-    private ResponseEntity<List<Product>> findFavoritesByClientId(@PathVariable Long clientId) {
+    private ResponseEntity<Set<Product>> findFavoritesByClientId(@PathVariable Long clientId) {
         return ResponseEntity.ok(service.findFavoritesByClientId(clientId));
     }
 
-    @PostMapping("/favorite-products")
-    public ResponseEntity<?> addFavorite(@RequestBody FavoriteDto favoriteDto) {
-        service.addFavorite(favoriteDto);
+    @PutMapping("/favorite-products")
+    public ResponseEntity<?> handlerFavorites(@RequestBody FavoriteDto favoriteDto) {
+        service.handlerFavorites(favoriteDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/product-is-favorite/{productId}")
+    public ResponseEntity<Boolean> productIsFavorite(
+            @PathVariable Long productId,
+            @RequestHeader (name="Authorization") String token
+    ) {
+        if(token != null) {
+            long userId = tokenService.getUserIdFromToken(token.substring(7));
+            return ResponseEntity.ok(service.productIsFavorite(userId, productId));
+        }
+        throw new ForbiddenException();
     }
 }

@@ -4,8 +4,8 @@ import dh.projetointegradorctd.backend.model.auth.User;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashMap;
 
 @Getter
 public class TokenDto implements Serializable {
@@ -16,12 +16,13 @@ public class TokenDto implements Serializable {
 	@NotBlank
 	private final String type;
 
-	@NotNull
-	private final User userDetails;
-
-	public TokenDto(String token, String type, User userDetails) {
+	private final HashMap<String, Object> userDetails;
+	public TokenDto(String token, String type, User user) {
 		this.token = token;
 		this.type = type;
-		this.userDetails = userDetails;
+		this.userDetails = new HashMap<>();
+		this.userDetails.put("id", user.getId());
+		this.userDetails.put("name", user.getName());
+		this.userDetails.put("lastname", user.getLastname());
 	}
 }

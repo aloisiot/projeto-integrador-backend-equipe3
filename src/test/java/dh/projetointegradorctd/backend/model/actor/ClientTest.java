@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
+import java.util.Set;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,7 +45,7 @@ public class ClientTest {
         Long clientId = clientRepository.getMaxId();
         this.client = clientRepository.findById(clientId).orElse(null);
         if(product != null && client != null) {
-            this.client.setFavoriteProducts(List.of(product));
+            this.client.setFavoriteProducts(Set.of(product));
         }
     }
 

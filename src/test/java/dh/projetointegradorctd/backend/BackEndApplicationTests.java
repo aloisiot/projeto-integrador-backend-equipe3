@@ -7,7 +7,6 @@ import dh.projetointegradorctd.backend.model.storage.City;
 import dh.projetointegradorctd.backend.model.storage.Product;
 import dh.projetointegradorctd.backend.repository.*;
 
-import java.util.List;
 import java.util.Set;
 
 public class BackEndApplicationTests {
@@ -55,7 +54,7 @@ public class BackEndApplicationTests {
 
 		product = productRepository.save(product);
 
-		client.setFavoriteProducts(List.of(product));
+		client.setFavoriteProducts(Set.of(product));
 		clientRepository.save(client);
 	}
 

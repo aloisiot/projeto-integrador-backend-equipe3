@@ -9,9 +9,9 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
-import java.util.List;
+
 import java.util.Set;
 
 @Entity
@@ -20,8 +20,8 @@ import java.util.Set;
 @JsonIgnoreProperties({"accountNonExpired", "accountNonLocked", "credentialsNonExpired", "username", "enabled"})
 public class Client extends User {
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> favoriteProducts;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Product> favoriteProducts;
     
     @PrePersist
     private void setClientAuthorities() {
