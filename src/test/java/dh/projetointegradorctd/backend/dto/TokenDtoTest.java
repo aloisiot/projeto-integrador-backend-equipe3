@@ -25,12 +25,8 @@ class TokenDtoTest {
         String tokenStr = "asda-adasc-asd";
         String tokenType = "Bearer";
 
-        TokenDto token = new TokenDto(null, null, null);
+        TokenDto token = new TokenDto(" ", " ", new User());
         Set<ConstraintViolation<TokenDto>> violations = validator.validate(token);
-        assertEquals(3, violations.size());
-
-        token = new TokenDto(" ", " ", new User());
-        violations = validator.validate(token);
         assertEquals(2, violations.size());
 
         token = new TokenDto(tokenStr, tokenType, new User());
