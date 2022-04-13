@@ -30,14 +30,18 @@ public class ClientController {
     private TokenService tokenService;
 
     /**
-     * Endopoint para a busca de todos os produtos favoritos de um cliente com base no seu ID.
-     * @param clientId ID do cliente cujos produtos seram buscados.
+     * Endopoint para a busca de todos os produtos favoritos de um cliente.
+     * @param token Token de autenticação do cliente
      * @return Lista contendo os produtos favoritados pelo cliente em questão.
      */
-    @GetMapping("/favorite-products/{clientId}")
+    @GetMapping("/favorite-products")
     @Operation(summary = "Busca uma lista de produtos favoritos com base no ID do cliente")
-    private ResponseEntity<Set<Product>> findFavoritesByClientId(@PathVariable Long clientId) {
-        return ResponseEntity.ok(service.findFavoritesByClientId(clientId));
+    public ResponseEntity<Set<Product>> findFavoritesByClientId(@RequestHeader (name="Authorization") String token) {
+        if(token != null) {
+            long userId = tokenService.getUserIdFromToken(token.substring(7));
+            return ResponseEntity.ok(service.findFavoritesByClientId(userId));
+        }
+        throw new ForbiddenException();
     }
 
     @PutMapping("/favorite-products")

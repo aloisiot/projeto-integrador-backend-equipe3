@@ -12,10 +12,8 @@ import java.util.Date;
 
 @Service
 public class TokenService {
-	
-	@Value("${api.jwt.expiration}")
-	private String expiration;
-	
+	private final long MILISECOUNDS_OF_ONE_DAY = 1000 * 60 * 24;
+	private final String expiration = String.valueOf(MILISECOUNDS_OF_ONE_DAY * 35);
 	@Value("${api.jwt.secret}")
 	private String secret;
 

@@ -58,7 +58,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/bookings").hasAuthority(CLIENT)
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/products").hasAuthority(CLIENT)
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/evaluations").hasAuthority(CLIENT)
-				.antMatchers(HttpMethod.POST, BASE_PATH + "/clients/favorite-products").hasAuthority(CLIENT)
+				.antMatchers(HttpMethod.PUT, BASE_PATH + "/clients/favorite-products").hasAuthority(CLIENT)
 				.antMatchers( BASE_PATH + "/users", BASE_PATH + "/roles").hasAuthority(ADMIN)
 				.antMatchers(HttpMethod.GET).permitAll()
 				.anyRequest().hasAuthority(ADMIN)
