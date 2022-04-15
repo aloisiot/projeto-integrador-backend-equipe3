@@ -49,15 +49,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		String ADMIN = Role.Authority.ADMIN.name();
-		String CLIENT = Role.Authority.CLIENT.name();
 
 		http.cors()
 				.and().authorizeRequests()
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/auth/sign-in").permitAll()
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/auth/sign-up").permitAll()
-				.antMatchers(HttpMethod.POST, BASE_PATH + "/bookings").hasAuthority(CLIENT)
-				.antMatchers(HttpMethod.POST, BASE_PATH + "/evaluations").hasAuthority(CLIENT)
-				.antMatchers(HttpMethod.PUT, BASE_PATH + "/clients/favorite-products").hasAuthority(CLIENT)
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/bookings").authenticated()
+				.antMatchers(HttpMethod.POST, BASE_PATH + "/evaluations").authenticated()
+				.antMatchers(HttpMethod.PUT, BASE_PATH + "/clients/favorite-products").authenticated()
 				.antMatchers(HttpMethod.POST, BASE_PATH + "/products").hasAuthority(ADMIN)
 				.antMatchers( BASE_PATH + "/users", BASE_PATH + "/roles").hasAuthority(ADMIN)
 				.antMatchers(HttpMethod.GET).permitAll()
