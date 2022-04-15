@@ -97,6 +97,14 @@ public class ProductControllerTest {
         characteristicRepository.save(characteristic);
         product.setCharacteristics(List.of(characteristic));
 
+        ProductPolicies policies = new ProductPolicies();
+        policies.setCancellation("cancellation policies");
+        policies.setGeneralRules("general policies");
+        policies.setCheersAndSecurity("cheers and security policies");
+        product.setPolicies(policies);
+
+        product.setAddress("address");
+
         Set<ConstraintViolation<Product>> violacoes = validator.validate(product);
         assertThat(violacoes.size()).isZero();
 

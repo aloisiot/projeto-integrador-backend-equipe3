@@ -5,6 +5,7 @@ import dh.projetointegradorctd.backend.model.auth.Role;
 import dh.projetointegradorctd.backend.model.storage.Category;
 import dh.projetointegradorctd.backend.model.storage.City;
 import dh.projetointegradorctd.backend.model.storage.Product;
+import dh.projetointegradorctd.backend.model.storage.ProductPolicies;
 import dh.projetointegradorctd.backend.repository.*;
 
 import java.util.Set;
@@ -51,6 +52,14 @@ public class BackEndApplicationTests {
 		category.setUrlImage("http://test.dev");
 		category = categoryRepository.save(category);
 		product.setCategory(category);
+
+		ProductPolicies policies = new ProductPolicies();
+		policies.setCancellation("cancellation policies");
+		policies.setGeneralRules("general policies");
+		policies.setCheersAndSecurity("cheers and security policies");
+		product.setPolicies(policies);
+
+		product.setAddress("address");
 
 		product = productRepository.save(product);
 
