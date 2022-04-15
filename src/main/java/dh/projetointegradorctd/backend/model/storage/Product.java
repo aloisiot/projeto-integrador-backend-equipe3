@@ -21,8 +21,8 @@ public class Product extends DataBaseEntity {
     private Long id;
 
     @NotBlank
-    @Size(min = 10, max = 255, message = "comprimento invalido para o campo descricao")
-    @Column(nullable = false)
+    @Size(min = 10, max = 500, message = "comprimento invalido para o campo descricao")
+    @Column(nullable = false, length = 500)
     private String description;
 
     @NotBlank
@@ -48,6 +48,12 @@ public class Product extends DataBaseEntity {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "product")
     @JsonIgnore
     private List<Evaluation> evaluations;
+
+    @Embedded
+    private ProductPolicies policies;
+
+    @Column(nullable = false)
+    private String address;
 
     private String latitude;
     private String longitude;

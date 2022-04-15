@@ -24,5 +24,6 @@ public class TokenDto implements Serializable {
 		this.userDetails.put("id", user.getId());
 		this.userDetails.put("name", user.getName());
 		this.userDetails.put("lastname", user.getLastname());
+		this.userDetails.put("authorities", user.getAuthorities());
 	}
 }
