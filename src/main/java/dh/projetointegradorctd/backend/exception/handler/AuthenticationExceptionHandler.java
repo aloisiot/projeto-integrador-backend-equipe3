@@ -1,5 +1,6 @@
 package dh.projetointegradorctd.backend.exception.handler;
 
+import dh.projetointegradorctd.backend.exception.security.AccountNotVerifiedException;
 import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
 import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import org.hibernate.procedure.ParameterMisuseException;
@@ -19,7 +20,8 @@ public class AuthenticationExceptionHandler {
     @ExceptionHandler({
             ForbiddenException.class,
             UsernameNotFoundException.class,
-            AuthenticationException.class
+            AuthenticationException.class,
+            AccountNotVerifiedException.class
     })
     public ResponseEntity<String> unautorizedHandler(Exception exception) {
         return ResponseEntity

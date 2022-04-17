@@ -1,7 +1,8 @@
 package dh.projetointegradorctd.backend.service;
 
+import dh.projetointegradorctd.backend.exception.global.InternalServerError;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
-import dh.projetointegradorctd.backend.exception.security.DuplicatedEmailException;
+import dh.projetointegradorctd.backend.exception.security.AccountNotVerifiedException;
 import dh.projetointegradorctd.backend.exception.security.ForbiddenException;
 import dh.projetointegradorctd.backend.model.actor.Client;
 import dh.projetointegradorctd.backend.model.auth.User;
@@ -9,6 +10,7 @@ import dh.projetointegradorctd.backend.request.SignUpForm;
 import dh.projetointegradorctd.backend.request.SignInForm;
 import dh.projetointegradorctd.backend.dto.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
+    @Value("${FRONTEND_ORIGIN}")
+    private String ORIGIN;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -26,6 +31,9 @@ public class AuthenticationService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private EmailService emailService;
 
     public TokenDto signIn (SignInForm form) throws ForbiddenException {
         UsernamePasswordAuthenticationToken authToken =
@@ -39,6 +47,10 @@ public class AuthenticationService {
         try {
             Long id = tokenService.getUserIdFromToken(token);
             user = clientService.findById(id);
+            if(!user.getIsEmailChecked()) {
+                sendVerificationEmail(user);
+                throw new AccountNotVerifiedException();
+            }
         } catch (ResorceNotFoundException e) {
             throw new ForbiddenException();
         }
@@ -52,6 +64,40 @@ public class AuthenticationService {
         client.setPassword(form.getPassword());
         client.setName(form.getName());
         client.setLastname(form.getLastname());
-        clientService.save(client);
+        client = clientService.save(client);
+
+        try {
+            sendVerificationEmail(client);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(client.getId() != null) {
+                clientService.deleteById(client.getId());
+            }
+            throw new InternalServerError();
+        }
+    }
+
+    private void sendVerificationEmail(User user) {
+        String url = ORIGIN + "/validate-email/" + user.getId() + "/" + user.getEmail().hashCode();
+        String message = "Clique no link para verificar seu email:\n" + url;
+        emailService.send(
+                message,
+                "Digital Booking [ Verificação de email ]",
+                user.getEmail()
+        );
+    }
+
+    public Boolean validateEmail(long userId, Integer emailHash) {
+        try {
+            Client client = clientService.findById(userId);
+            boolean isValid = emailHash.equals(client.getEmail().hashCode());
+            if(isValid) {
+                client.setIsEmailChecked(true);
+                clientService.update(client);
+            }
+            return isValid;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

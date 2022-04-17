@@ -48,8 +48,8 @@ public class AuthenticationController {
 	}
 
 //  TODO - Implementar serviço de checagem de email para validar cadastro
-//	@GetMapping("check-email/{userId}/{emailHash}")
-//	public ResponseEntity<Boolean> check(@PathVariable long userId, @PathVariable int emailHash) {
-//		return ResponseEntity.ok(authService.checkEmail(userId, emailHash));
-//	}
+	@GetMapping("/validate-email/{userId}/{emailHash}")
+	public ResponseEntity<Boolean> check(@PathVariable Long userId, @PathVariable Integer emailHash) {
+		return ResponseEntity.ok(authService.validateEmail(userId, emailHash));
+	}
 }

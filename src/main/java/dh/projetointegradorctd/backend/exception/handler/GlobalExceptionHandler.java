@@ -1,6 +1,7 @@
 package dh.projetointegradorctd.backend.exception.handler;
 
 import dh.projetointegradorctd.backend.exception.global.EmpityRepositoryException;
+import dh.projetointegradorctd.backend.exception.global.InternalServerError;
 import dh.projetointegradorctd.backend.exception.global.ResorceNotFoundException;
 import dh.projetointegradorctd.backend.exception.global.UnprocessableEntityException;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({ ValidationException.class, MethodArgumentNotValidException.class })
-    public ResponseEntity<String> validationException(Exception exception) {
+    public ResponseEntity<String> validationExceptionHandler(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{\"error\" : \"" + exception.getMessage() + "\"}");
+    }
+
+    @ExceptionHandler({ InternalServerError.class })
+    public ResponseEntity<String> internalServerErrorHandler(Exception exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{\"error\" : \"" + exception.getMessage() + "\"}");
     }

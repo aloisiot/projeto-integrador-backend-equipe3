@@ -1,6 +1,5 @@
 package dh.projetointegradorctd.backend.model.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dh.projetointegradorctd.backend.model.storage.DataBaseEntity;
 import lombok.Getter;
@@ -44,6 +43,14 @@ public class User extends DataBaseEntity implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @NotNull(message = "Autorizações não devem ser nulas para o usuário")
     private Set<Role> authorities;
+
+    @Column(nullable = false)
+    private Boolean isEmailChecked;
+
+    @PrePersist
+    private void prePersist() {
+        setIsEmailChecked(false);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
