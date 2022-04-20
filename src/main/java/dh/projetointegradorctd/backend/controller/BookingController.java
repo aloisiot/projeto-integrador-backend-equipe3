@@ -37,23 +37,15 @@ public class BookingController {
     }
 
     /**
-     * Endpoint para a busca de reservas de um cliente com base em seu ID.
-     * Se o ID presente no token for diferente do ID do cliente uma ForbiddenException sera lançada.
-     * @param clientId ID do cliente
+     * Endpoint para a busca de reservas de um cliente.
      * @param token Token do usuário para a autenticação da transação conexão.
      * @return Lista de reservas pertencentes ao cliente
      */
-    @GetMapping("/by-client/{clientId}")
+    @GetMapping("/by-client")
     @Operation(summary = "Busca reservas de um cliente com base em seu seu ID")
-    public ResponseEntity<List<Booking>> findAllByClientId(
-        @PathVariable Long clientId,
-        @RequestHeader (name="Authorization") String token
-    ) {
+    public ResponseEntity<List<Booking>> findAllByClientId(@RequestHeader (name="Authorization") String token) {
         long userId = tokenService.getUserIdFromToken(token.substring(7));
-        if(clientId.equals(userId)) {
-            return ResponseEntity.ok(service.findAllByClientId(clientId));
-        }
-        throw new ForbiddenException();
+        return ResponseEntity.ok(service.findAllByClientId(userId));
     }
 
     /**
